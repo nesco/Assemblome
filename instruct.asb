@@ -1,0 +1,4 @@
+tag "FLYS.pp" as polypeptide
+tag "01212" as address
+produce address@polypeptide
+produce 01212@FLYS.pp
