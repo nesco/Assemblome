@@ -14,6 +14,7 @@ def scan(path):
 
 
 def find_tag_pattern(text):
+    """detect tag patterns"""
     data, tag = None, None
 
     # Define the regular expression pattern
@@ -29,7 +30,7 @@ def find_tag_pattern(text):
     return data, tag
 
 def parse_tag(content):
-
+    """replace all tags by their corresponding data following the tag instructions"""
     content_new = []
 
     for i, line in sorted(enumerate(content), key=lambda x: x[0], reverse=True):
