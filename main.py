@@ -73,7 +73,7 @@ def specify(aa_chain, complement):
 
     # Check if the two input chains have the same length
     if len(aa_chain) != len(complement):
-        raise ValueError("The amino acid chain and the number chain must have the same length.")
+        raise ValueError("The amino acid chain and the complement must have the same length.")
 
     # Initialize the RNA sequence with the start codon
     rna_sequence = 'AUG'
@@ -120,7 +120,7 @@ def find_tag_pattern(text):
         
     return data, tag
 
-def parse_tag(content):
+def parse_tags(content):
     """replace all tags by their corresponding data following the tag instructions"""
     content_new = []
 
@@ -133,3 +133,20 @@ def parse_tag(content):
 
     content_new.reverse()
     return content_new
+
+def replace_functional_expression(match_obj):
+    complement = match_obj.group(1)
+    aa_chain = match_obj.group(2)
+    rna_chain = specify(aa_chain, base64_to_list(complement)) + '.rna'
+    return rna_chain
+
+def process_functional_expression(s):
+    pattern = r'([A-Za-z0-9+/=]+)@([ARNDCQEGHILKMFPSTWYV]+)\.aa'
+    return re.sub(pattern, replace_functional_expression, s)
+
+def parse_functional_expressions(content):
+    content_new = [process_functional_expression(line) for line in content]
+    return content_new
+
+def parse(content):
+    return parse_functional_expressions(parse_tags(content))
