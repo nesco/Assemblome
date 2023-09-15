@@ -4,6 +4,9 @@
 
 import re
 
+from utils import list_to_base64, base64_to_list
+from utils_genomics import specify
+
 ## Constants
 
 # REGEXES to detect the main instructions of Assemblome 
@@ -77,4 +80,17 @@ def parse_tags(content):
             content_new.append(line)
 
     content_new.reverse()
+    return content_new
+
+def replace_functional_expression(match_obj):
+    complement = match_obj.group(1)
+    aa_chain = match_obj.group(2)
+    rna_chain = specify(aa_chain, base64_to_list(complement)) + '.rna'
+    return rna_chain
+
+def process_functional_expression(s):
+    return re.sub(REGEX_FUNCTIONAL_EXPRESSION, replace_functional_expression, s)
+
+def parse_functional_expressions(content):
+    content_new = [process_functional_expression(line) for line in content]
     return content_new

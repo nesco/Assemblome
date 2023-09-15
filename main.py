@@ -1,8 +1,6 @@
 import re
-from utils import list_to_base64, base64_to_list
-from utils_genomics import specify
-from lang import REGEX_IMPORT, REGEX_TAG, REGEX_FUNCTIONAL_EXPRESSION
-from lang import parse_tags, parse_imports
+
+from lang import parse_tags, parse_imports, parse_functional_expressions
 # from tag import Tag
 # from relationship import Relationship
 
@@ -86,19 +84,6 @@ def scan(path):
 #    for rel in relationships.values():
 #        print(rel)
 #=======
-
-def replace_functional_expression(match_obj):
-    complement = match_obj.group(1)
-    aa_chain = match_obj.group(2)
-    rna_chain = specify(aa_chain, base64_to_list(complement)) + '.rna'
-    return rna_chain
-
-def process_functional_expression(s):
-    return re.sub(REGEX_FUNCTIONAL_EXPRESSION, replace_functional_expression, s)
-
-def parse_functional_expressions(content):
-    content_new = [process_functional_expression(line) for line in content]
-    return content_new
 
 def parse(content):
     return parse_functional_expressions(parse_tags(parse_imports(content)))
