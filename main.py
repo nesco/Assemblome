@@ -8,9 +8,6 @@ def scan(path):
     
     instructions = ['#', 'import', 'tag', 'produce', 'raw']
     content = []
-    # Placeholder lists to store tags and relationships
-    tags = {}
-    relationships = {}
     
     #Read file
     with open(path, 'r') as file:

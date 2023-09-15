@@ -17,10 +17,10 @@ Assemblome aims to bridge the gap between genetic data and individuals with dive
 
 ## Features
 
-- **Tag System:** Define and manage genetic elements (tags) with associated attributes and types.
-- **Relationships:** Establish connections between genetic elements to represent relationships.
+- **Tag System:** Define macros to factor long protein, base64 complement strings or other sequences.
+- **Import System:** Identical to tags, however instead of replacing a tag by a string, it replaces it by the content of a file. 
+- **Functional Expressions:** Enables to express the full genomic information while specifying directly the output protein.
 - **Parsing:** Read and interpret `.asb` files to populate the tag and relationship structures.
-- **Querying:** Perform queries to retrieve specific genetic elements and explore relationships.
 
 ## Installation
 
