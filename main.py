@@ -1,6 +1,7 @@
 import re
 
-from langs import parse_tags, parse_imports, parse_functional_expressions, parse_produce
+# from langs import parse_tags, parse_imports, parse_functional_expressions, parse_produce
+from langs import *
 
 
 def scan(path):

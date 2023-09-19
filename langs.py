@@ -5,7 +5,7 @@
 import re
 
 from utils import list_to_base64, base64_to_list
-from utils_genomics import specify
+from utils_genomics import specify, translate
 
 ## Constants
 
@@ -18,8 +18,11 @@ REGEX_IMPORT =  r'^import (?P<data>[^"]+) as (?P<tag>\w+)$'
 REGEX_TAG = r'^tag "(?P<data>[^"]+)" as (?P<tag>\w+)$'
 REGEX_FUNCTIONAL_EXPRESSION = r'([A-Za-z0-9+/=]+)@([ARNDCQEGHILKMFPSTWYV]+)\.aa'
 REGEX_PRODUCE = r'^produce ([AUGC]+)\.rna'
+REGEX_RNA = r'([AUGC]+)\.rna'
 
 ## Functions
+
+# Assembly
 
 def find_replacement_pattern(text, regex):
     """Detect patterns which are used to replace a given token by some other data."""
@@ -87,3 +90,11 @@ def process_produce(s):
 def parse_produce(content):
     content_new = [process_produce(line) for line in content]
     return content_new
+
+# Disassembly
+def rna_to_functional_expression(rna_chain):
+    aa_chain, complement = translate(rna_chain)
+    return list_to_base64(complement) + "@" + aa_chain + ".aa"
+
+def replace_rna_by_functional_expression(s):
+    return re.sub(REGEX_RNA, lambda match: rna_to_functional_expression(match.group(1)), s)
