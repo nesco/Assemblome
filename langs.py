@@ -17,6 +17,7 @@ from utils_genomics import specify
 REGEX_IMPORT =  r'^import (?P<data>[^"]+) as (?P<tag>\w+)$'
 REGEX_TAG = r'^tag "(?P<data>[^"]+)" as (?P<tag>\w+)$'
 REGEX_FUNCTIONAL_EXPRESSION = r'([A-Za-z0-9+/=]+)@([ARNDCQEGHILKMFPSTWYV]+)\.aa'
+REGEX_PRODUCE = r'^produce ([AUGC]+)\.rna'
 
 ## Functions
 
@@ -73,4 +74,16 @@ def process_functional_expression(s):
 
 def parse_functional_expressions(content):
     content_new = [process_functional_expression(line) for line in content]
+    return content_new
+
+def replace_produce(match_obj):
+    rna_chain = match_obj.group(1)
+    dna_chain = rna_chain.replace('U', 'T')
+    return dna_chain
+
+def process_produce(s):
+    return re.sub(REGEX_PRODUCE, replace_produce, s)
+
+def parse_produce(content):
+    content_new = [process_produce(line) for line in content]
     return content_new

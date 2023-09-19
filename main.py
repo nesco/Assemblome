@@ -1,6 +1,6 @@
 import re
 
-from langs import parse_tags, parse_imports, parse_functional_expressions
+from langs import parse_tags, parse_imports, parse_functional_expressions, parse_produce
 
 
 def scan(path):
@@ -17,8 +17,9 @@ def scan(path):
     return content
 
 def parse(content):
-    return parse_functional_expressions(parse_tags(parse_imports(content)))
+    return parse_produce(parse_functional_expressions(parse_tags(parse_imports(content))))
 
 if __name__ == '__main__':
     content = scan('instruct.asb')
     output = parse(content)
+    output_old = parse_functional_expressions(parse_tags(parse_imports(content)))
