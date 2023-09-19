@@ -14,29 +14,18 @@ from utils_genomics import specify
 # Tag: 'tag "FLSY.aa" as polypeptide'
 # Functional expression: 'oKI@FLSY.aa'
 
-REGEX_IMPORT =  r'^import (?P<path_import>[^"]+) as (?P<tag>\w+)$'
+REGEX_IMPORT =  r'^import (?P<data>[^"]+) as (?P<tag>\w+)$'
 REGEX_TAG = r'^tag "(?P<data>[^"]+)" as (?P<tag>\w+)$'
 REGEX_FUNCTIONAL_EXPRESSION = r'([A-Za-z0-9+/=]+)@([ARNDCQEGHILKMFPSTWYV]+)\.aa'
 
 ## Functions
 
-def find_import_pattern(text):
-    path_import, tag = None, None
-
-    match = re.fullmatch(REGEX_IMPORT, text)
-
-    if match:
-        path_import = match.group('path_import')
-        tag = match.group('tag')
-
-    return path_import, tag
-
-def find_tag_pattern(text):
-    """detect tag patterns"""
+def find_replacement_pattern(text, regex):
+    """Detect patterns which are used to replace a given token by some other data."""
     data, tag = None, None
 
     # Match the pattern in the text
-    match = re.fullmatch(REGEX_TAG, text)
+    match = re.fullmatch(regex, text)
 
     if match:
         data = match.group('data')
@@ -50,37 +39,28 @@ def load_import(path_import):
 
     return content
 
-# TODO: Creeate a single backawards file replacement mechanism for both imports and tags
-# They are basically the same
+def inverse_progressive_replacement(content, regex, func):
+    content_new = []
+
+    for i, line in sorted(enumerate(content), key=lambda x: x[0], reverse=True):
+        data, tag = find_replacement_pattern(line, regex)
+        if data is not None and tag is not None:
+            replacement = func(data)
+            content_new = [line.replace(tag, replacement) for line in content_new]
+        else:
+            content_new.append(line)
+
+    content_new.reverse()
+    return content_new
+            
 
 def parse_imports(content):
     """replace all tags by their corresponding data following the tag instructions"""
-    content_new = []
-
-    for i, line in sorted(enumerate(content), key=lambda x: x[0], reverse=True):
-        path_import, tag = find_import_pattern(line)
-        if path_import is not None and tag is not None:
-            content_import = load_import(path_import)
-            content_new = [line.replace(tag, content_import) for line in content_new]
-        else:
-            content_new.append(line)
-
-    content_new.reverse()
-    return content_new
+    return inverse_progressive_replacement(content, REGEX_IMPORT, load_import)
 
 def parse_tags(content):
     """replace all tags by their corresponding data following the tag instructions"""
-    content_new = []
-
-    for i, line in sorted(enumerate(content), key=lambda x: x[0], reverse=True):
-        data, tag = find_tag_pattern(line)
-        if data is not None and tag is not None:
-            content_new = [line.replace(tag, data) for line in content_new]
-        else:
-            content_new.append(line)
-
-    content_new.reverse()
-    return content_new
+    return inverse_progressive_replacement(content, REGEX_TAG, lambda x: x)
 
 def replace_functional_expression(match_obj):
     complement = match_obj.group(1)
