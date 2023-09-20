@@ -13,7 +13,9 @@ Assemblome is a Python-based tool designed to simplify the parsing and manipulat
 
 ## Introduction
 
-Assemblome aims to bridge the gap between genetic data and individuals with diverse technical backgrounds. It allows users to define genetic elements, their attributes, and relationships in simple `.asb` files, enabling easy manipulation and analysis of genetic information without requiring in-depth biological expertise.
+Assemblome aims to bridge the gap between genetic data and individuals with diverse technical backgrounds. It allows users to work with genetic information in a language they understand, as opposed as sets of sequences of 'A', 'T/U', 'G' and 'C'. Assemblome `.asb` files instead contains assembly-like instructions meant to be isomorphic to the original dna serquences. The end game is to pave the way to higher level languages, enabling easy manipulation and analysis of genetic information without requiring in-depth biological expertise.
+
+    ![Assemblome idea](/images/assemblome_idea.png)
 
 ## Features
 
