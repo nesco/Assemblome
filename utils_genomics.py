@@ -66,7 +66,7 @@ def specify(aa_chain, complement):
       aa_chain += ' '
 
     # Check if the two input chains have the same length
-    if len(aa_chain) != len(complement):
+    if len(aa_chain) != len(complement) and len(complement) > 0:
         raise ValueError("The amino acid chain and the complement must have the same length.")
 
     # Initialize the RNA sequence with the start codon
@@ -74,7 +74,11 @@ def specify(aa_chain, complement):
 
     # Go through each amino acid and pick the corresponding codon
     for i, aa in enumerate(aa_chain):
-        num = complement[i]
+
+        if len(complement) == 0:
+            num = 0
+        else:
+            num = complement[i]
 
          # Check if the number is valid for the given amino acid
         if num >= len(CODON_TABLE[aa]):

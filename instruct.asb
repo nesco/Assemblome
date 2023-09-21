@@ -18,3 +18,5 @@ tag "oKI" as address
 produce address@pp
 produce address@polypeptide
 produce oKI@FLSY.aa
+
+produce 6VXX.pdb

@@ -4,7 +4,7 @@
 
 import re
 
-from utils import list_to_base64, base64_to_list, pdb_to_fasta
+from utils import list_to_base64, base64_to_list, pdb_to_fasta_chains
 from utils_genomics import specify, translate
 
 ## Constants
@@ -16,14 +16,14 @@ from utils_genomics import specify, translate
 
 REGEX_IMPORT =  r'^import (?P<data>[^"]+) as (?P<tag>\w+)$'
 REGEX_TAG = r'^tag "(?P<data>[^"]+)" as (?P<tag>\w+)$'
-REGEX_FUNCTIONAL_EXPRESSION = r'([A-Za-z0-9+/=]+)@([ARNDCQEGHILKMFPSTWYV]+)\.aa'
+REGEX_FUNCTIONAL_EXPRESSION = r'([A-Za-z0-9+/=]+@)?([ARNDCQEGHILKMFPSTWYV]+)\.aa'
 REGEX_PRODUCE = r'^produce ([AUGC]+)\.rna'
 REGEX_RNA = r'([AUGC]+)\.rna'
 
 # PDB
-# Either 'PGCHS.pdb'
-# Or 'from PDB import PGCHS as random_protein' (equivalent to a tag PGCHS.pdb as random_protein)
-REGEX_PDB_CHAIN = r'(?P<id_pdb>[ABCDEFGHIJKLMNOPQRSTUVWXYZ]{5}).pdb'
+# Either 'PCHS.pdb'
+# Or 'from PDB import PCHS as random_protein' (equivalent to a tag PCHS.pdb as random_protein)
+REGEX_PDB_CHAIN = r'(?P<id_pdb>[A-Z0-9]{4})(?P<chain>:\d)?\.pdb'
 
 ## Functions
 
@@ -71,8 +71,19 @@ def parse_tags(content):
     """replace all tags by their corresponding data following the tag instructions"""
     return inverse_progressive_replacement(content, REGEX_TAG, lambda x: x)
 
+def replace_pdb_by_aa_chain(match):
+    pdb_id = match.group(1)
+    digit = match.group(2)
+
+    if digit:  # If the optional digit part exists, remove the colon
+        digit = int(digit[1])
+    else:
+        digit = 0
+
+    return pdb_to_fasta_chains(pdb_id)[digit] + '.aa'
+
 def replace_pdb(s):
-    return re.sub(REGEX_PDB_CHAIN, lambda match: pdb_to_fasta(match.group(1)) + '.aa', s)
+    return re.sub(REGEX_PDB_CHAIN, replace_pdb_by_aa_chain, s)
 
 def parse_pdbs(content):
     return [replace_pdb(line) for line in content]
@@ -80,6 +91,12 @@ def parse_pdbs(content):
 def replace_functional_expression(match_obj):
     complement = match_obj.group(1)
     aa_chain = match_obj.group(2)
+
+    if complement:
+        complement = complement[:-1]
+    else:
+        complement = ""
+
     rna_chain = specify(aa_chain, base64_to_list(complement)) + '.rna'
     return rna_chain
 
