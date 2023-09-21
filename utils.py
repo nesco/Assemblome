@@ -40,3 +40,21 @@ def base64_to_list(base64_str):
     num_base7 = baseX_to_baseY(base64_str, 64, 7)
     # Remove the sentinel value '6' to get the original list
     return [int(digit) for digit in num_base7[1:]]
+
+# DB retrievals
+
+def pdb_to_fasta(pdb_id):
+    """Returns the corresponding FASTA amino-acid chain given a Protein Data Bank (PDB) Protein ID"""
+    url = f"https://www.rcsb.org/fasta/entry/{pdb_id}"
+
+    try:
+      response = requests.get(url)
+      response.raise_for_status()
+    except requests.exceptions.HTTPError as errh:
+      print ("HTTP Error:",errh)
+      return None
+    except requests.exceptions.ConnectionError as errc:
+      print ("Error Connecting:",errc)
+      return None
+
+    return response.text

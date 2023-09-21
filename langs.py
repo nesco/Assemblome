@@ -4,7 +4,7 @@
 
 import re
 
-from utils import list_to_base64, base64_to_list
+from utils import list_to_base64, base64_to_list, pdb_to_fasta
 from utils_genomics import specify, translate
 
 ## Constants
@@ -19,6 +19,11 @@ REGEX_TAG = r'^tag "(?P<data>[^"]+)" as (?P<tag>\w+)$'
 REGEX_FUNCTIONAL_EXPRESSION = r'([A-Za-z0-9+/=]+)@([ARNDCQEGHILKMFPSTWYV]+)\.aa'
 REGEX_PRODUCE = r'^produce ([AUGC]+)\.rna'
 REGEX_RNA = r'([AUGC]+)\.rna'
+
+# PDB
+# Either 'PGCHS.pdb'
+# Or 'from PDB import PGCHS as random_protein' (equivalent to a tag PGCHS.pdb as random_protein)
+REGEX_PDB_CHAIN = r'(?P<id_pdb>[ABCDEFGHIJKLMNOPQRSTUVWXYZ]{5}).pdb'
 
 ## Functions
 
@@ -66,6 +71,12 @@ def parse_tags(content):
     """replace all tags by their corresponding data following the tag instructions"""
     return inverse_progressive_replacement(content, REGEX_TAG, lambda x: x)
 
+def replace_pdb(s):
+    return re.sub(REGEX_PDB_CHAIN, lambda match: pdb_to_fasta(match.group(1)) + '.aa', s)
+
+def parse_pdbs(content):
+    return [replace_pdb(line) for line in content]
+
 def replace_functional_expression(match_obj):
     complement = match_obj.group(1)
     aa_chain = match_obj.group(2)
@@ -76,8 +87,7 @@ def process_functional_expression(s):
     return re.sub(REGEX_FUNCTIONAL_EXPRESSION, replace_functional_expression, s)
 
 def parse_functional_expressions(content):
-    content_new = [process_functional_expression(line) for line in content]
-    return content_new
+    return [process_functional_expression(line) for line in content]
 
 def replace_produce(match_obj):
     rna_chain = match_obj.group(1)
