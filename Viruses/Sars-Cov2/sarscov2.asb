@@ -21,12 +21,13 @@ import n.fna as nucleocapsid
 # "interstice" here are non-coding parts of the DNA/RNA strand of the sars-cov2 virus
 tag "ACGAACA" as interstice1
 tag "ACGAACTT" as interstice2
-tag "ACGAACTAAATATTATATTAGTTTTTCTGTTTGGAACTTTAATTTTAGCC" as interstice3
-tag "GTGACAACAG" as interstice4
-tag "ACGAAC" as interstice5
-tag "TTGAACTTTCATTAATTGACTTCTATTTGTGCTTTTTAGCCTTTCTGCTATTCCTTGTTTTAATTATGCTTATTATCTTTTGGTTCTCACTTGAACTGCAAGATCATAATGAAACTTGTCACGCCTAAACGAAC" as interstice6
-tag "ACGAACAAACTAAA" as interstice6
-tag "ACTCATGCAGACCACACAAGGCAG" as interstice7
+tag "GCACAAGCTGATGAGTACGAACTT" as interstice3
+tag "ACGAACTAAATATTATATTAGTTTTTCTGTTTGGAACTTTAATTTTAGCC" as interstice4
+tag "GTGACAACAG" as interstice5
+tag "ACGAAC" as interstice6
+tag "TTGAACTTTCATTAATTGACTTCTATTTGTGCTTTTTAGCCTTTCTGCTATTCCTTGTTTTAATTATGCTTATTATCTTTTGGTTCTCACTTGAACTGCAAGATCATAATGAAACTTGTCACGCCTAAACGAAC" as interstice7
+tag "ACGAACAAACTAAA" as interstice8
+tag "ACTCATGCAGACCACACAAGGCAG" as interstice9
 
 # end + Poly-A
 import end.fna as end
@@ -39,22 +40,24 @@ spike
 
 interstice2
 orf3a
+interstice3
 
 enveloppe
 
-interstice3
+interstice4
 
 membrane
 
-interstice4
-orf6
 interstice5
+orf6
+interstice6
 orf7a
-interstice6
+interstice7
 orf8
-interstice6
+interstice8
 
 nucleocapsid
 
+interstice9
 orf10
 end

@@ -50,6 +50,9 @@ To start using Assemblome, follow these basic steps:
 1. Create or edit `.asb` files to define genetic elements and relationships.
 2. ...
 
+You can try removing the sarscov2.fna file in /Viruses/Sars-Cov2/sarscov2.fna, regenerate it using the command `python3 main.py /Viruses/Sars-Cov2/sarscov2.fna`
+You can then compare it to /Viruses/Sars-Cov2/sars_cov2_comp.fna
+
 
 ## Contributing
 
