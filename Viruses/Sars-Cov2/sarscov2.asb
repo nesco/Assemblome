@@ -1,0 +1,5 @@
+import preamble.fna as preamble
+import orf1ab.fna as orf1ab
+
+preamble
+orf1ab 

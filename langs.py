@@ -63,9 +63,9 @@ def inverse_progressive_replacement(content, regex, func):
     return content_new
             
 
-def parse_imports(content):
+def parse_imports(content, path_current):
     """replace all tags by their corresponding data following the tag instructions"""
-    return inverse_progressive_replacement(content, REGEX_IMPORT, load_import)
+    return inverse_progressive_replacement(content, REGEX_IMPORT, lambda path: load_import(path_current + path))
 
 def parse_tags(content):
     """replace all tags by their corresponding data following the tag instructions"""

@@ -1,0 +1,20 @@
+# This is a comment
+
+# The import instruction take the content of a file and replace the following key-word by it
+import flsy as pp
+
+# The tag instruction does the same but with a string literal.
+tag "FLSY.aa" as polypeptide
+tag "oKI" as address
+
+# functional expressions are expressions of the following pattern:
+# "base64_string@amino_acid_chain.aa"
+# it enables to express proteins as such while conserving fully the precise genomic information
+# and thus enables full convertibility to RNA / DNA
+# it will become a "rna_chain.rna"
+
+
+# the "produce rna_chain.rna" instruction is there to indicate a protein is produced
+produce address@pp
+produce address@polypeptide
+produce oKI@FLSY.aa
