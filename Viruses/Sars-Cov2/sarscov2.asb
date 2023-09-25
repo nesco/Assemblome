@@ -1,5 +1,60 @@
+# The preamble is a large non-coding sequence at the start
 import preamble.fna as preamble
+
+# The ORFs proteins
 import orf1ab.fna as orf1ab
+import orf3a.fna as orf3a
+import orf6.fna as orf6
+import orf7a.fna as orf7a
+import orf8.fna as orf8
+tag "ATGGGCTATATAAACGTTTTCGCTTTTCCGTTTACGATATATAGTCTACTCTTGTGCAGAATGAATTCTCGTAACTACATAGCACAAGTAGATGTAGTTAACTTTAATCTCACATAG" as orf10
+
+# The glycoproteins S, E, M
+import s.fna as spike
+import e.fna as enveloppe
+import m.fna as membrane
+
+# The phosphoro-protein N
+import n.fna as nucleocapsid
+
+
+# "interstice" here are non-coding parts of the DNA/RNA strand of the sars-cov2 virus
+tag "ACGAACA" as interstice1
+tag "ACGAACTT" as interstice2
+tag "ACGAACTAAATATTATATTAGTTTTTCTGTTTGGAACTTTAATTTTAGCC" as interstice3
+tag "GTGACAACAG" as interstice4
+tag "ACGAAC" as interstice5
+tag "TTGAACTTTCATTAATTGACTTCTATTTGTGCTTTTTAGCCTTTCTGCTATTCCTTGTTTTAATTATGCTTATTATCTTTTGGTTCTCACTTGAACTGCAAGATCATAATGAAACTTGTCACGCCTAAACGAAC" as interstice6
+tag "ACGAACAAACTAAA" as interstice6
+tag "ACTCATGCAGACCACACAAGGCAG" as interstice7
+
+# end + Poly-A
+import end.fna as end
 
 preamble
 orf1ab 
+interstice1
+
+spike
+
+interstice2
+orf3a
+
+enveloppe
+
+interstice3
+
+membrane
+
+interstice4
+orf6
+interstice5
+orf7a
+interstice6
+orf8
+interstice6
+
+nucleocapsid
+
+orf10
+end
