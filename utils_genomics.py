@@ -1,5 +1,8 @@
 """Utils Genomics module stores the helper functions which contains genomics knowledge"""
 
+## Imports
+from typing import Tuple
+
 ## Constants
 
 CODON_TABLE = {
@@ -30,7 +33,7 @@ CODON_TABLE = {
 
 ## Functions
 
-def translate(rna_chain):
+def translate(rna_chain: str) -> Tuple[str, str]:
     """Translates a rna sequence into a polypeptide + complement"""
 
     rna_codons = [rna_chain[i:i+3] for i in range(0, len(rna_chain), 3)]
@@ -51,9 +54,9 @@ def translate(rna_chain):
         if aa_chain[-1] == " ":
           break
 
-    # Remove the leading M and 0 for the actual start place
+    # To-Do: maybe remove the leading M and 0 for the actual start place if post-transcriptional cleaving?
     # Also remove the last " "
-    return (aa_chain[1:-1], complement[1:])
+    return (aa_chain[:-1], complement)
 
 def specify(aa_chain, complement):
     # Define the codon table
@@ -69,8 +72,11 @@ def specify(aa_chain, complement):
     if len(aa_chain) != len(complement) and len(complement) > 0:
         raise ValueError("The amino acid chain and the complement must have the same length.")
 
-    # Initialize the RNA sequence with the start codon
-    rna_sequence = 'AUG'
+    # Initialize the RNA sequence with the start codon if the start codon isn't there
+    rna_sequence = ''
+
+    if aa_chain[0] != 'M':
+        rna_sequence += 'AUG'
 
     # Go through each amino acid and pick the corresponding codon
     for i, aa in enumerate(aa_chain):

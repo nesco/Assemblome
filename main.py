@@ -6,7 +6,6 @@ import sys
 # from langs import parse_tags, parse_imports, parse_functional_expressions, parse_produce
 from langs import *
 
-
 def scan(path):
     """read a asb file and perform a lexical analysis."""
     
@@ -43,21 +42,41 @@ def assemble(content, path):
     return content_tabulated
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        path_asb = sys.argv[1]
-        path = os.path.dirname(path_asb)
+    
+    if len(sys.argv) <= 2:
+        print("Options:")
+        print("-a / --assemble <path_to_file>: assemble an asb file")
+        print("-d / --disassemble <path_to_file>: disassemble an FASTA file representing a DNA sequence")
+
+
+    if len(sys.argv) > 2:
+        # Retrieving the input file and its directory
+        path_input = sys.argv[2]
+        base_name = os.path.basename(path_input) 
+        path = os.path.dirname(path_input)
+        
         if len(path) > 0:
             path += "/"
 
-        content = scan(path_asb)
-        output = assemble(content, path)
+        # -a option assemble an .asb file
+        if sys.argv[1] in ["-a", "--assemble"]:
 
-        base_name = os.path.basename(path_asb) 
-        file_name, _ = os.path.splitext(base_name)
+            content = scan(path_input)
+            output = assemble(content, path)
 
-        with open(path + file_name + ".fna", 'w') as file:
-            file.write(output)
+            file_name, _ = os.path.splitext(base_name)
 
+            with open(path + file_name + ".fna", 'w') as file:
+                file.write(output)
+
+        # To-Do: -d
+        if sys.argv[1] in ["-d", "--disassemble"]:
+            dna_chain = load_raw(path_input)
+            rna_chain = dna_chain.replace('T', 'U')
+            aa_chain, complement = translate(rna_chain)
+            complement = list_to_base64(complement)
+            print(aa_chain)
+            print(complement)
 
 
     #content, path = scan('instruct_without_pdb.asb')

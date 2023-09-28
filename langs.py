@@ -4,7 +4,7 @@
 
 import re
 
-from utils import list_to_base64, base64_to_list, pdb_to_fasta_chains
+from utils import list_to_base64, base64_to_list, pdb_to_fasta_chains, load_raw
 from utils_genomics import specify, translate
 
 ## Constants
@@ -42,12 +42,6 @@ def find_replacement_pattern(text, regex):
 
     return data, tag
 
-def load_import(path_import):
-    with open(path_import, 'r') as file:
-        content = ''.join(list(map(str.strip, file)))
-
-    return content
-
 def inverse_progressive_replacement(content, regex, func):
     content_new = []
 
@@ -61,11 +55,10 @@ def inverse_progressive_replacement(content, regex, func):
 
     content_new.reverse()
     return content_new
-            
 
 def parse_imports(content, path_current):
     """replace all tags by their corresponding data following the tag instructions"""
-    return inverse_progressive_replacement(content, REGEX_IMPORT, lambda path: load_import(path_current + path))
+    return inverse_progressive_replacement(content, REGEX_IMPORT, lambda path: load_raw(path_current + path))
 
 def parse_tags(content):
     """replace all tags by their corresponding data following the tag instructions"""

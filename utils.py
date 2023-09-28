@@ -6,6 +6,14 @@ import requests
 
 ## Functions
 
+# File access
+def load_raw(path_import):
+    """Load a file while removing the formatting. Useful for .fna files"""
+    with open(path_import, 'r') as file:
+        content = ''.join(list(map(str.strip, file)))
+
+    return content
+
 # Conversion of a list of integers between 0 and 5 from and to Base64
 
 def baseX_to_baseY(num_str, base_x, base_y):
