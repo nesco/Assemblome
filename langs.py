@@ -4,7 +4,7 @@
 
 import re
 
-from utils import list_to_base64, base64_to_list, pdb_to_fasta_chains, load_raw
+from utils import list_to_base64, base64_to_list, pdb_to_fasta_chains, uniprot_to_fasta_chain, load_raw, protein_sequence_to_PDB_ID
 from utils_genomics import specify, translate
 
 ## Constants
@@ -20,10 +20,11 @@ REGEX_FUNCTIONAL_EXPRESSION = r'([A-Za-z0-9+/=]+@)?([ARNDCQEGHILKMFPSTWYV]+)\.aa
 REGEX_PRODUCE = r'^produce ([AUGC]+)\.rna'
 REGEX_RNA = r'([AUGC]+)\.rna'
 
-# PDB
+# PDB and Uniprot
 # Either 'PCHS.pdb'
 # Or 'from PDB import PCHS as random_protein' (equivalent to a tag PCHS.pdb as random_protein)
 REGEX_PDB_CHAIN = r'(?P<id_pdb>[A-Z0-9]{4})(?P<chain>:\d)?\.pdb'
+REGEX_UNIPROT_CHAIN = r'(?P<id_uniprot>[A-Z0-9]{6-11})\.up'
 
 ## Functions
 
@@ -75,11 +76,19 @@ def replace_pdb_by_aa_chain(match):
 
     return pdb_to_fasta_chains(pdb_id)[digit] + '.aa'
 
-def replace_pdb(s):
-    return re.sub(REGEX_PDB_CHAIN, replace_pdb_by_aa_chain, s)
+def replace_uniprot_by_aa_chain(match):
+    uniprot_id = match.group(1)
 
-def parse_pdbs(content):
-    return [replace_pdb(line) for line in content]
+    return uniprot_to_fasta_chain(uniprot_id) + '.aa'
+
+def replace_id(s):
+    output = re.sub(REGEX_PDB_CHAIN, replace_pdb_by_aa_chain, s)
+    output = re.sub(REGEX_UNIPROT_CHAIN, replace_uniprot_by_aa_chain, output)
+
+    return output
+
+def parse_ids(content):
+    return [replace_id(line) for line in content]
 
 def replace_functional_expression(match_obj):
     complement = match_obj.group(1)
