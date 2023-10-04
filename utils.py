@@ -210,6 +210,32 @@ def protein_sequence_to_PDB_ID(protein_sequence: str):
     else:
         print("Error:", response.status_code)
 
+## Class
+
+class Uniprot():
+    """Object to encapsulate access to the uniprot DB data. Act as a blackbox on the pickle cache system"""
+    
+
+    def __init__(self):
+        self.id_to_sequence = {}
+        self.entry_name_to_sequence = {}
+        self.sequence_to_id_and_entry_name = {}
+        try:
+            self.id_to_sequence = load_from_disk('./data/id_to_sequence.pkl')
+            self.entry_name_to_sequence = load_from_disk('./data/entry_name_to_sequence.pkl')
+            self.sequence_to_id_and_entry_name = load_from_disk('./data/sequence_to_id_and_entry_name.pkl')
+        except (FileNotFoundError, pickle.UnpicklingError):
+            self.id_to_sequence, self.entry_name_to_sequence, self.sequence_to_id_and_entry_name = load_fasta('./data/uniprot_sprot.fasta')
+            save_to_disk(self.id_to_sequence, './data/id_to_sequence.pkl')
+            save_to_disk(self.entry_name_to_sequence, './data/entry_name_to_sequence.pkl')
+            save_to_disk(self.sequence_to_id_and_entry_name, './data/sequence_to_id_and_entry_name.pkl')
+
+    def get_sequence(self, identifier):
+        return get_sequence_by_id_or_entry_name(identifier, self.id_to_sequence, self.entry_name_to_sequence)
+
+    def get_identifiers(self, sequence):
+        return get_id_and_entry_name_by_sequence(sequence, self.sequence_to_id_and_entry_name)
+            
 
 ## Tests
 
