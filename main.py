@@ -75,8 +75,12 @@ if __name__ == '__main__':
             rna_chain = dna_chain.replace('T', 'U')
             aa_chain, complement = translate(rna_chain)
             complement = list_to_base64(complement)
-            print(aa_chain)
-            print(complement)
+           
+            (uniprot_id, entry_name) = DB_UNIPROT.sequence_to_id_and_entry_name[aa_chain] 
+            print("UNIPROT ID: " + uniprot_id)
+            print("Entry name: " + entry_name)
+            print("Amino-acid sequence: " + aa_chain)
+            print("Complement: " + complement)
 
 
     #content, path = scan('instruct_without_pdb.asb')

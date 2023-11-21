@@ -1,0 +1,89 @@
+## This ASB document is describing the Sars-Cov-2 Virus
+
+# TO-DO: Find way to better describe and encode UTRs
+# TO-DO: Find a way to describe overlapping gene/ORF. ORF9b and ORF9 are entirely contained in the same sequence as the N protein. It put some restriction on the codon used
+# TO-DO: Describe how ORFs can encode proteins. ORF1ab encodes 16 non-structural proteins (NSPs) numbered from 1 to 16.
+# TO-DO: Organize protein production around ORFs
+# https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8067447/#:~:text=Genomic%20Arrangement%20of%20SARS%2DCoV%2D2&text=The%20pp1a%20non%2Dstructural%20protein,and%20nucleocapsid%20(N)%20proteins.
+
+#  TO-DO:
+#  Support ORFs in general. If there is an ORF, the complement should be at frame level + indicate where are the proteins
+#  Support for frameshifting sites and secondary/tertiary structure might be required before
+#  Support the alternative reading frames: ORF1a vs ORF1ab
+#  Indicates the polyproteins and maybe there future NSPs subcomposant for PP1a and PP1ab for ORF1a and ORF1ab
+#  There are other alternative frames: ORF9 has ORF9a (Nucleocapsid), ORF9b, ORF9c for example
+#  Separate the cap from UTR-5'
+#  Separate the Poly-A structure from UTR-3'
+#  Find a shorter way to encode complements
+#  Maybe use entry name in UNIPROT instead of ID, it might be clearer
+
+# TO-ADD:
+# ORF1a/b
+# ORF3a
+# ORF7a
+# ORF8
+# ORF10
+# and the ""interstices"" -> find what it is. NOTE: THE "INTERSTICES" ARE MOSTLY DUE TO ORFs b/c/d etc
+
+# Structural elements
+import utr5.fna as UTR5
+import utr3.fna as UTR3
+
+# SARS-COV-2 GLYCOPROTEINS
+tag "P0DTC2" as SPIKE
+tag "P0DTC4" as ENVELOPPE
+tag "P0DTC5" as MEMBRANE
+
+# Proteins of unamed ORFs
+tag "P0DTC3" as ORF3A
+tag "P0DTC6" as ORF6
+tag "P0DTC8" as ORF8
+tag "A0A663DJA2" as ORF10
+
+# N-Phosphoro protein
+# Warning: we only consider at present the ORF9a / N protein, which comprise the entire ORF9 reading frame
+# However in the future, there should be indications for ORF9b and ORF9c proteins as alternative readings of ORF9
+tag "P0DTC9" as NUCLEOCAPSIDE
+
+UTR5
+
+# TO-DO: PP1A & PP1AB due to ORF1a and ORF1ab
+
+## ORF-2
+# ORF-2a: The Spike Glycoprotein. It's used by the virion to bind to the ACE2 receptors to enter human cells
+produce 8W8IohZIzMXLZBwyX8qXbCSWenYutjF9MrFL4GuOk+TVdJ+IvPlHc68HdSREvIreN++hDrES5UGcdERuLp+TVeDkdJMosjI3KT6Kb/K1CIAcTldFpxdVtDAbY2Vt/pfwNrkX0VmdXMfPvnqLiTVu4qTJunvRTnzL8UmZJrI02YtNcAHFv1qCwx680X37tqFj3NZ7O5RhIQ9rcA4OdB1vLMneYd+n3uT/ypgncCmCajQkfax+vO98kn/mAEtgukQsExn25YQFHaswL4ITHVgqeInLsqGE6+WUKHONoJH8o6afd+/eXoA/9G9ELyRTicXYtT2/LqXNyGUF3swuGwBTJzyp6H562ZMCtXSpVjED4/QDaVjx08q2B9XOWp1TzYyCJpcHqtxgZpH2FaGXpB6IgAWBsrWbaO4XZVu4FxzqqmxuBzPOoNw3Jm1h+EwfGHrr5zLGQ5NDZclc6bijrPehm8Ql2PaiKgqTqd/v7Km91/UxMxh6f8k7POyxxX5ftYrz5qaKLed814YbskHEtOz1hNMzK2c1LSTamcjTqJ/pw6UyUwSrMz1shBy99jW6U3OlMVAlwrCRWCxuHrw3AX4E2@SPIKE.up
+
+# to combine with ORF-2b
+
+## ORF-3
+# ORF-3a
+produce aGYDZtDF6g+BYytf4xv6710EFpYaLpRGwKZxix9f1bTyQyDItQ1i994ElYSg6YBrDeHNRzpuopxzVC7AaX/Tp7sdKQM0x/0Ad0UhQvd1xClswk/BiG0IZVyySp1sCavR1s@ORF3A.up
+# Also: ORF-3c, ORF-3d, ORF-3d2
+# + the case of ORF-3b (between ORF-3a and ORF-4 with 4 evolution steps)
+
+# ORF-4
+produce ZRpJVK46xx6ojA4QbUt8cyKJlD/mM9H1s61h@ENVELOPPE.up
+
+# ORF-5
+produce oSdGNWodRfmbyaJEbIMBwHO2YcEnrpbGRy46MknJURteLz9HnBm8ZeyXpUqtXvbP/rtkfrwRW+5Rtys8pK3RNDpF09JQh1Q2nmq8BE4EW@MEMBRANE.up
+
+# ORF-6
+produce 6fi9P5F1alTXE7Urkh5OYiRR/t1Xtw@ORF6.up
+
+## ORF-7
+# TO-DO: ORF7a and ORF7b
+
+# ORF-8
+produce 8u7CTTNIm+nz8pXVjPKmVyFBjUXLfBkwI7tB3uZqRvoP4X6E4SJbMVBNFo@ORF8.up
+
+## ORF-9
+# ORF-9a: Nucleocapsid phosphoprotein
+# Basically the virion shell
+produce P3IUQdZuJVNJf9x6DQQO7ynUhI16iK3Rjg5gTAtEjinT3XNJJvzDIZbkv7cXXp5ptI5i2noURT9CFPC40jmQImh4WICii2TXnpv8BpbzYLH2Qm+YVGtAQpDPWG/6g0oRYWFtL0NiyJX5ENFhyLqH4xjrYE31vx0OvfTYui2GbHUpD1WGFDgnybqymDTMyZJ6Atuxt@NUCLEOCAPSIDE.up
+# ORF-9b and ORF-9c need to be integrated
+
+# ORF-10
+# ORF-10 is not proven to be functionnaly interpreted as a protein
+produce gU4Uc9NklWnRUei/o6i@ORF10.up
+UTR3
+
