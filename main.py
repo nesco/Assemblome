@@ -26,7 +26,8 @@ def scan(path):
     return content
 
 def parse(content, path):
-    return parse_produce(parse_functional_expressions(parse_ids(parse_tags(parse_imports(content, path)))))
+    # TO-DO: get over this abomination
+    return parse_produce(parse_slippery_sequence(parse_functional_expressions(parse_ids(parse_tags(parse_imports(content, path))))))
 
 def assemble(content, path):
     content_parsed = parse(content, path)

@@ -74,6 +74,21 @@ def load_from_disk(filename):
 #print(get_sequence_by_id_or_entry_name('Q6GZX4', id_to_sequence, entry_name_to_sequence))
 #print(get_id_and_entry_name_by_sequence('MAFSAEDVLKEYDRRRRMEALLLSLYYPNDRKLLDYKEWSPPRVQVECPKAPVEWNNPPS...', sequence_to_id_and_entry_name))
 
+# string utils
+def common_start(str1, str2):
+    min_length = min(len(str1), len(str2))
+    for i in range(min_length):
+        if str1[i] != str2[i]:
+            return str1[:i]
+    return str1[:min_length]
+
+# Example usage
+#string1 = "hello world"
+#string2 = "hello python"
+#common_substring = common_start(string1, string2)
+#print("Common starting substring:", common_substring)
+
+
 
 # Conversion of a list of integers between 0 and 5 from and to Base64
 

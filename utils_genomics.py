@@ -56,6 +56,8 @@ def translate(rna_chain: str) -> Tuple[str, str]:
 
     # To-Do: maybe remove the leading M and 0 for the actual start place if post-transcriptional cleaving?
     # Also remove the last " "
+    
+    # Removing the STOP codon, but not the complement as there are several stop codons
     return (aa_chain[:-1], complement)
 
 def specify(aa_chain, complement):
