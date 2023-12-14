@@ -35,7 +35,14 @@ tag "P0DTC5" as MEMBRANE
 # Proteins of unamed ORFs
 tag "P0DTC3" as ORF3A
 tag "P0DTC6" as ORF6
+tag "P0DTC7" as ORF7A
 tag "P0DTC8" as ORF8
+#
+# N-Phosphoro protein
+# Warning: we only consider at present the ORF9a / N protein, which comprise the entire ORF9 reading frame
+# However in the future, there should be indications for ORF9b and ORF9c proteins as alternative readings of ORF9
+tag "P0DTC9" as NUCLEOCAPSIDE
+
 tag "A0A663DJA2" as ORF10
 
 # complements
@@ -43,49 +50,76 @@ tag "1jYM7YoUfYjxJ2fCAv+iOWP+GcWPFCOqtsypKZDRXmF9KrTlM5eMzBudDxBloYuVVezhibGZJqg
 
 tag "TIaSxykmiOLBLZ2BXL3BJqmvw3t37cVnRORrT+/k6UOZ4TlDl9FjuY1JbY2RT5KaTxHigWpS29gHibSE3s1A1dmLKcOuFxFUKqhfs4jfR9kuapkFJIyUnsPwbQW/KE8vIWSV8BgiFXdnrlTxnMEmsnBfTpRFul+StdBI4Kf1bTryBcVuIpOf4BNTMm9JESEKh2xzs25WpgXroWa059iIOSPZC1nkNG/tXdj+zW3VV1Tj6oQXzxERsI/ytKYGmEVgXrIq/ikaoITlGAFlYcmfkET/5U5UHivwDXdt+O33FOkVJ6moi/8KNRFr1ii9H2S74G8kd0fqW8vBoWynNcT2KarUKyafJrazynib/JnNggJY1yzCFVJe+Uv626XSnWyFlyGb8Xjr/ki7lvPUPNzMw+bz4jX5uNq2iFQt1ZlA+dmSO0mh3tyXOq96KlC5QRz8z/VjbIvzSExMaPl96XpOp9iqOlZz9rcJmw/ruaScZDhB41cSY33yQG6X9cLrHs+UzEGE8Pl3lhomE/4qTvP6rPc+GKocz1SKR388bAilkiS+UA5byfSI3p8S2iF+raOzilYtWTLcGeC8hjV2ppM4llJ8CrNjQzn2vPfD6/vEBYwGIiFQU9QS+pf1yhcv1ygY/2BNalcdZq05ldB5RB9Ipu4aVdqbq4qLQfNJI90uZSsrXeKbz4LJjORcIX/SzVsNYNqOwxBaQRpL2ZALa/etl4QQBG/5GyYmrg9In1kN3avNWNRZQrf4262tVl4K3DglMdksY7gU4mBGMrhDADT+QiZF4cmGRfhcgBRdCSJGFeUYd4feUSwi7Va7Jiv608hBJQ3u+s/V1PsZ3A7JY/G/420KBeWjWYdBXZ6v90fCTwjNfsUc5tthbJLX8pxw6xjN+YlyxxIF5oUbnP0AN6ycY9YMAGbgimseLjLbn6Nx+nsXLI14ffL6BuP4V0vhPzJmS4AfOF/UmmrVpvI6FzE/51VkAx3Y5jn2EOIPwN+AP8R1VDQGfCjN4gKbHFkrj4eMOO6jHjqceFEoVaIIGtmqQRHTtcEYi0VLxE8EEhhexu2afeD34Xx8zDAAQ+NypVZVe3uvyeV3CKr6mVVeC+QlmBm9ROCjyfNFziqFLNDj+++pvtqVmn0vcbAlQ6Jl4RChGTQlNF6fc78PF6Dsjx4fCwcKHke50jn3zEKbGVvMdfr2laqJy2tXpqo9aEhuaOU8JI4pXowivzqYftrQQi+hWA5yolw44r/wpevOJ8My9oxquh8OpnsbZ30z3Wtm2M0ELbuAqUMOISHRImDQiompp4A3vUQIXV18OA+N/xkr8AZzlpfzb2NENnYt/I45yfJU/c3BKH5poYTMGfRj0KhDzY7+xfFUHLkwmogNhtYJmRtzrht/yw2PG4jboV0WWoVMRyKFBWVqjcz74Xy5JlhLaps1jImeW6MtoqnMEt+AQPW9beeqIDgNx6oTS0VPpk5xp8VJ0LoTmOndZ3+ue68Y9d10Y2F7UvWkJXHVc/wqAZQlcbk/7n9KVcjwDTsjJmyZRa8X9fs2OIlLjuAf2DonINnb//L1YVxNv/g4SWVdaMhQT2bDjZhY5q7KGDXo3+uxRQO28Z5pKCNwRo+RZgBkJXM2GHTtqshlSMvwZxkIEdN2bv6LorGWoyVznVRrPbmv2ViSRwfd8xUwvYhIjd99K0RAYkm+0+P3zRNrgHaD3i2x9HTX5mE75AWLsnBSkCqUE4DBEIkUYjbCxIIoH6SgMVIvhauktWzF+ZRWx93sO76ATCQ95LORk5QWIx5+X+SV98orgsj3ICmyzorYk7mMP4WO85wnPlxwXOfjdI1CaJ7kh2RfVVo1m3Y/q/fXBhLfzjEHXJ2j1T1UnEALQgg+h8hJoohd4aq7+e/i/+zyOJ4+rm4ILHZ52Me45cNQ35bzSO6CA253jp9XODSEMr0DWCZytVlLO+kZy4KdRvb5VzfOdEwdGVCRf4/HVKR8eIIsTbetw6fcGQbcWJMHrJPZ4vh0Yr8K3B8NUSlfJOK2eOijYwOKLbKYT6CZoJf2WWoqP5IReBvMCeef1U" as C1A
 
-# N-Phosphoro protein
-# Warning: we only consider at present the ORF9a / N protein, which comprise the entire ORF9 reading frame
-# However in the future, there should be indications for ORF9b and ORF9c proteins as alternative readings of ORF9
-tag "P0DTC9" as NUCLEOCAPSIDE
+tag "8W8IohZIzMXLZBwyX8qXbCSWenYutjF9MrFL4GuOk+TVdJ+IvPlHc68HdSREvIreN++hDrES5UGcdERuLp+TVeDkdJMosjI3KT6Kb/K1CIAcTldFpxdVtDAbY2Vt/pfwNrkX0VmdXMfPvnqLiTVu4qTJunvRTnzL8UmZJrI02YtNcAHFv1qCwx680X37tqFj3NZ7O5RhIQ9rcA4OdB1vLMneYd+n3uT/ypgncCmCajQkfax+vO98kn/mAEtgukQsExn25YQFHaswL4ITHVgqeInLsqGE6+WUKHONoJH8o6afd+/eXoA/9G9ELyRTicXYtT2/LqXNyGUF3swuGwBTJzyp6H562ZMCtXSpVjED4/QDaVjx08q2B9XOWp1TzYyCJpcHqtxgZpH2FaGXpB6IgAWBsrWbaO4XZVu4FxzqqmxuBzPOoNw3Jm1h+EwfGHrr5zLGQ5NDZclc6bijrPehm8Ql2PaiKgqTqd/v7Km91/UxMxh6f8k7POyxxX5ftYrz5qaKLed814YbskHEtOz1hNMzK2c1LSTamcjTqJ/pw6UyUwSrMz1shBy99jW6U3OlMVAlwrCRWCxuHrw3AX4E2" as CSPIKE
+tag "aGYDZtDF6g+BYytf4xv6710EFpYaLpRGwKZxix9f1bTyQyDItQ1i994ElYSg6YBrDeHNRzpuopxzVC7AaX/Tp7sdKQM0x/0Ad0UhQvd1xClswk/BiG0IZVyySp1sCavR1s" as C3A
+tag "ZRpJVK46xx6ojA4QbUt8cyKJlD/mM9H1s61h" as CENVELOPPE
+tag "oSdGNWodRfmbyaJEbIMBwHO2YcEnrpbGRy46MknJURteLz9HnBm8ZeyXpUqtXvbP/rtkfrwRW+5Rtys8pK3RNDpF09JQh1Q2nmq8BE4EW" as CMEMBRANE
+tag "6fi9P5F1alTXE7Urkh5OYiRR/t1Xtw" as C6
+tag "8u3vafCjLkENMWT4dkCA7XbQuifDl2HT6S2XSSBBZXdxCdKADWcgo+p/ju" as C7A
+tag "8u7CTTNIm+nz8pXVjPKmVyFBjUXLfBkwI7tB3uZqRvoP4X6E4SJbMVBNFo" as C8
+tag "P3IUQdZuJVNJf9x6DQQO7ynUhI16iK3Rjg5gTAtEjinT3XNJJvzDIZbkv7cXXp5ptI5i2noURT9CFPC40jmQImh4WICii2TXnpv8BpbzYLH2Qm+YVGtAQpDPWG/6g0oRYWFtL0NiyJX5ENFhyLqH4xjrYE31vx0OvfTYui2GbHUpD1WGFDgnybqymDTMyZJ6Atuxt" as C9
+
+# "interstice" here are non-coding parts of the DNA/RNA strand of the sars-cov2 virus. Some of them are due to not currentluy supported overlapping ORFs, other are truly non coding
+tag "ACGAACA" as interstice1
+tag "ACGAACTT" as interstice2
+tag "GCACAAGCTGATGAGTACGAACTT" as interstice3
+tag "ACGAACTAAATATTATATTAGTTTTTCTGTTTGGAACTTTAATTTTAGCC" as interstice4
+tag "GTGACAACAG" as interstice5
+tag "ACGAAC" as interstice6
+tag "TTGAACTTTCATTAATTGACTTCTATTTGTGCTTTTTAGCCTTTCTGCTATTCCTTGTTTTAATTATGCTTATTATCTTTTGGTTCTCACTTGAACTGCAAGATCATAATGAAACTTGTCACGCCTAAACGAAC" as interstice7
+tag "ACGAACAAACTAAA" as interstice8
+tag "ACTCATGCAGACCACACAAGGCAG" as interstice9
+
 
 UTR5
 
 # {rna1<rna2) = -1 slippery event
 
 produce C1A@PP1A.up < C1AB@PP1AB.up
-
+interstice1
 ## ORF-2
 # ORF-2a: The Spike Glycoprotein. It's used by the virion to bind to the ACE2 receptors to enter human cells
-produce 8W8IohZIzMXLZBwyX8qXbCSWenYutjF9MrFL4GuOk+TVdJ+IvPlHc68HdSREvIreN++hDrES5UGcdERuLp+TVeDkdJMosjI3KT6Kb/K1CIAcTldFpxdVtDAbY2Vt/pfwNrkX0VmdXMfPvnqLiTVu4qTJunvRTnzL8UmZJrI02YtNcAHFv1qCwx680X37tqFj3NZ7O5RhIQ9rcA4OdB1vLMneYd+n3uT/ypgncCmCajQkfax+vO98kn/mAEtgukQsExn25YQFHaswL4ITHVgqeInLsqGE6+WUKHONoJH8o6afd+/eXoA/9G9ELyRTicXYtT2/LqXNyGUF3swuGwBTJzyp6H562ZMCtXSpVjED4/QDaVjx08q2B9XOWp1TzYyCJpcHqtxgZpH2FaGXpB6IgAWBsrWbaO4XZVu4FxzqqmxuBzPOoNw3Jm1h+EwfGHrr5zLGQ5NDZclc6bijrPehm8Ql2PaiKgqTqd/v7Km91/UxMxh6f8k7POyxxX5ftYrz5qaKLed814YbskHEtOz1hNMzK2c1LSTamcjTqJ/pw6UyUwSrMz1shBy99jW6U3OlMVAlwrCRWCxuHrw3AX4E2@SPIKE.up
+produce CSPIKE@SPIKE.up
+interstice2
 
 # to combine with ORF-2b
 
 ## ORF-3
 # ORF-3a
-produce aGYDZtDF6g+BYytf4xv6710EFpYaLpRGwKZxix9f1bTyQyDItQ1i994ElYSg6YBrDeHNRzpuopxzVC7AaX/Tp7sdKQM0x/0Ad0UhQvd1xClswk/BiG0IZVyySp1sCavR1s@ORF3A.up
+produce C3A@ORF3A.up
 # Also: ORF-3c, ORF-3d, ORF-3d2
 # + the case of ORF-3b (between ORF-3a and ORF-4 with 4 evolution steps)
+interstice3
 
 # ORF-4
-produce ZRpJVK46xx6ojA4QbUt8cyKJlD/mM9H1s61h@ENVELOPPE.up
+produce CENVELOPPE@ENVELOPPE.up
+interstice4
 
 # ORF-5
-produce oSdGNWodRfmbyaJEbIMBwHO2YcEnrpbGRy46MknJURteLz9HnBm8ZeyXpUqtXvbP/rtkfrwRW+5Rtys8pK3RNDpF09JQh1Q2nmq8BE4EW@MEMBRANE.up
+produce CMEMBRANE@MEMBRANE.up
+interstice5
 
 # ORF-6
-produce 6fi9P5F1alTXE7Urkh5OYiRR/t1Xtw@ORF6.up
+produce C6@ORF6.up
+interstice6
 
 ## ORF-7
 # TO-DO: ORF7a and ORF7b
+# For now ORF7a only
+
+produce C7A@ORF7A.up
+interstice7
 
 # ORF-8
-produce 8u7CTTNIm+nz8pXVjPKmVyFBjUXLfBkwI7tB3uZqRvoP4X6E4SJbMVBNFo@ORF8.up
+produce C8@ORF8.up
+interstice8
 
 ## ORF-9
 # ORF-9a: Nucleocapsid phosphoprotein
 # Basically the virion shell
-produce P3IUQdZuJVNJf9x6DQQO7ynUhI16iK3Rjg5gTAtEjinT3XNJJvzDIZbkv7cXXp5ptI5i2noURT9CFPC40jmQImh4WICii2TXnpv8BpbzYLH2Qm+YVGtAQpDPWG/6g0oRYWFtL0NiyJX5ENFhyLqH4xjrYE31vx0OvfTYui2GbHUpD1WGFDgnybqymDTMyZJ6Atuxt@NUCLEOCAPSIDE.up
+produce C9@NUCLEOCAPSIDE.up
 # ORF-9b and ORF-9c need to be integrated
+interstice9
 
 # ORF-10
 # ORF-10 is not proven to be functionnaly interpreted as a protein

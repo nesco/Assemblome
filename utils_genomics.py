@@ -34,7 +34,7 @@ CODON_TABLE = {
 ## Functions
 
 def translate(rna_chain: str) -> Tuple[str, str]:
-    """Translates a rna sequence into a polypeptide + complement"""
+    """Translates a rna sequence into a polypeptide + complement. The trasnlation is ideal: no slippery sequence, or other secondary effects"""
 
     rna_codons = [rna_chain[i:i+3] for i in range(0, len(rna_chain), 3)]
     aa_chain = ""
@@ -52,13 +52,16 @@ def translate(rna_chain: str) -> Tuple[str, str]:
         if not found:
             raise ValueError(f"Codon {rna_codon} is not recognised.")
         if aa_chain[-1] == " ":
+          #when there is a stop codon, the translation stop and the stop part is removed
+          aa_chain = aa_chain[:-1]
           break
 
     # To-Do: maybe remove the leading M and 0 for the actual start place if post-transcriptional cleaving?
     # Also remove the last " "
     
     # Removing the STOP codon, but not the complement as there are several stop codons
-    return (aa_chain[:-1], complement)
+    #return (aa_chain[:-1], complement)
+    return (aa_chain, complement)
 
 def specify(aa_chain, complement):
     # Define the codon table
