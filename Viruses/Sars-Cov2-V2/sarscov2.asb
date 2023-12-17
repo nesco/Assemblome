@@ -10,13 +10,41 @@
 #  Support ORFs in general. If there is an ORF, the complement should be at frame level + indicate where are the proteins
 #  Indicates the polyproteins and maybe there future NSPs subcomposant for PP1a and PP1ab for ORF1a and ORF1ab
 #  There are other alternative frames: ORF9 has ORF9a (Nucleocapsid), ORF9b, ORF9c for example
+#  Support the TRSs and the leader sequence for the cutting of gRNA into sgRNA
 #  Separate the cap from UTR-5'
 #  Separate the Poly-A structure from UTR-3'
 #  Find a shorter way to encode complements
 #  Maybe use entry name in UNIPROT instead of ID, it might be clearer
 
-# TO-ADD:
-# ORF7a
+##### Sars-Cov-2 #######
+# The Sars-Cov2 is a positive single strand virus. As a virus, its information is really compressed
+# It injects a RNA strand that is interpreted by the ribosome as a mRNA
+# Struture of the strand
+
+# 5'end  -> Leader sequence (~ virus version of an UTR-5') -> TRS-L -> ORF1a/b -> TSR-B -> Spike -> (TRS-B in-between or integratd into the previous for 3a -> E -> M -> 6 -> 7a -> 7b -> 8 -> N -> 10) -> UTR-3' -> 3' end
+# TSR: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7179501/
+#
+#
+# Most of the information is in ORF1a/b, it encodes probabistically two different polyproteins through a -1 frameshift event
+# PP1a which encodes 11 non-structural proteins (NSPs)
+# PP1ab which encodes 15 NSPs
+# The NSPs are created when the PP1a/b are cleaved of post-translation
+# The -1 frameshift event enables to create the NSPs in different proportions
+# https://en.wikipedia.org/wiki/ORF1ab
+#
+# The most important of them is NSP 12, which encodes the RdRP, a protein that enables RNA -> RNA information tranfer
+# It copies the genomic RNA (gRNA) and can "skip" some part to create subgenomic RNA (sgRNA)
+# This mechanism is what enables thez virus to store all its protein on a single strand of RNA
+# Fore example, by creating a sgRNA which skips ORF1ab, the ribosome will read it as producing the spike protein, because the first start codon it will encounter correspond to the spike, and it will stop with the stop codon of the spike
+# Same for all other proteins
+#
+# another shenanigan the virus uses besides the -1 frameshift is leaky scanning
+# it enables it to encode several proteins in a unique sequence, or proteins in ORFs that overlaps 
+#
+# All this space optimisation comes of course with a loss of "orthogonality". As a given sequence needs to produce several working proteins with specific functions, it creates strong constraints on this sequence
+# 
+# The end product of this RNA is to create new virions, which means copies of the entire original gRNA, bound by the N (nucleocapsid) proteins, stuffed into the E (enveloppe) protein. And the M (membrane) and  S (spike) proteins which rest on the enveloppe. Spike function is to trigger the ACE-2 receptors of a cell to enable the virion to enter it and continue the cycle. The function of M is less clear, but its important in the assembly of the virus 
+
 # and the ""interstices"" -> find what it is. NOTE: THE "INTERSTICES" ARE MOSTLY DUE TO ORFs b/c/d etc
 
 # Structural elements
