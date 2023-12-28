@@ -19,7 +19,7 @@ from utils_genomics import specify, translate
 # Functional expression: 'oKI@FLSY.aa'
 
 REGEX_IMPORT =  r'^import (?P<data>[^"]+) as (?P<tag>\w+)$'
-REGEX_TAG = r'^tag "(?P<data>[^"]+)" as (?P<tag>\w+)$'
+REGEX_TAG = r'^tag "(?P<data>[^"]+)" as (?P<tag>[\w-]+)$'
 REGEX_FUNCTIONAL_EXPRESSION = r'([A-Za-z0-9+\/=]+@)?([ARNDCQEGHILKMFPSTWYV]+)\.aa'
 REGEX_SLIPPERY = r'([AUGC]+)\.rna\s+(<+|>+)\s+([AUGC]+)\.rna'
 REGEX_PRODUCE = r'^produce ([AUGC]+)\.rna'

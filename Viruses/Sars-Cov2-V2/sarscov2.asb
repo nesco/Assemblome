@@ -21,8 +21,6 @@
 # It injects a RNA strand that is interpreted by the ribosome as a mRNA
 # Struture of the strand
 
-# 5'end  -> Leader sequence (~ virus version of an UTR-5') -> TRS-L -> ORF1a/b -> TSR-B -> Spike -> (TRS-B in-between or integratd into the previous for 3a -> E -> M -> 6 -> 7a -> 7b -> 8 -> N -> 10) -> UTR-3' -> 3' end
-# TSR: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7179501/
 #
 #
 # Most of the information is in ORF1a/b, it encodes probabistically two different polyproteins through a -1 frameshift event
@@ -33,6 +31,7 @@
 # https://en.wikipedia.org/wiki/ORF1ab
 #
 # The most important of them is NSP 12, which encodes the RdRP, a protein that enables RNA -> RNA information tranfer
+# All this NSPs assembles into a RTC (Replication - Transcription Complex)
 # It copies the genomic RNA (gRNA) and can "skip" some part to create subgenomic RNA (sgRNA)
 # This mechanism is what enables thez virus to store all its protein on a single strand of RNA
 # Fore example, by creating a sgRNA which skips ORF1ab, the ribosome will read it as producing the spike protein, because the first start codon it will encounter correspond to the spike, and it will stop with the stop codon of the spike
@@ -47,10 +46,7 @@
 
 # and the ""interstices"" -> find what it is. NOTE: THE "INTERSTICES" ARE MOSTLY DUE TO ORFs b/c/d etc
 
-# Structural elements
-import utr5.fna as UTR5
-import utr3.fna as UTR3
-
+####### Proteins
 # ORF1ab Polyprotein
 tag "P0DTC1" as PP1A
 tag "P0DTD1" as PP1AB
@@ -79,6 +75,7 @@ tag "1jYM7YoUfYjxJ2fCAv+iOWP+GcWPFCOqtsypKZDRXmF9KrTlM5eMzBudDxBloYuVVezhibGZJqg
 tag "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" as C1A
 
 tag "8W8IohZIzMXLZBwyX8qXbCSWenYutjF9MrFL4GuOk+TVdJ+IvPlHc68HdSREvIreN++hDrES5UGcdERuLp+TVeDkdJMosjI3KT6Kb/K1CIAcTldFpxdVtDAbY2Vt/pfwNrkX0VmdXMfPvnqLiTVu4qTJunvRTnzL8UmZJrI02YtNcAHFv1qCwx680X37tqFj3NZ7O5RhIQ9rcA4OdB1vLMneYd+n3uT/ypgncCmCajQkfax+vO98kn/mAEtgukQsExn25YQFHaswL4ITHVgqeInLsqGE6+WUKHONoJH8o6afd+/eXoA/9G9ELyRTicXYtT2/LqXNyGUF3swuGwBTJzyp6H562ZMCtXSpVjED4/QDaVjx08q2B9XOWp1TzYyCJpcHqtxgZpH2FaGXpB6IgAWBsrWbaO4XZVu4FxzqqmxuBzPOoNw3Jm1h+EwfGHrr5zLGQ5NDZclc6bijrPehm8Ql2PaiKgqTqd/v7Km91/UxMxh6f8k7POyxxX5ftYrz5qaKLed814YbskHEtOz1hNMzK2c1LSTamcjTqJ/pw6UyUwSrMz1shBy99jW6U3OlMVAlwrCRWCxuHrw3AX4E2" as CSPIKE
+
 tag "aGYDZtDF6g+BYytf4xv6710EFpYaLpRGwKZxix9f1bTyQyDItQ1i994ElYSg6YBrDeHNRzpuopxzVC7AaX/Tp7sdKQM0x/0Ad0UhQvd1xClswk/BiG0IZVyySp1sCavR1s" as C3A
 tag "ZRpJVK46xx6ojA4QbUt8cyKJlD/mM9H1s61h" as CENVELOPPE
 tag "oSdGNWodRfmbyaJEbIMBwHO2YcEnrpbGRy46MknJURteLz9HnBm8ZeyXpUqtXvbP/rtkfrwRW+5Rtys8pK3RNDpF09JQh1Q2nmq8BE4EW" as CMEMBRANE
@@ -87,64 +84,93 @@ tag "8u3vafCjLkENMWT4dkCA7XbQuifDl2HT6S2XSSBBZXdxCdKADWcgo+p/ju" as C7A
 tag "8u7CTTNIm+nz8pXVjPKmVyFBjUXLfBkwI7tB3uZqRvoP4X6E4SJbMVBNFo" as C8
 tag "P3IUQdZuJVNJf9x6DQQO7ynUhI16iK3Rjg5gTAtEjinT3XNJJvzDIZbkv7cXXp5ptI5i2noURT9CFPC40jmQImh4WICii2TXnpv8BpbzYLH2Qm+YVGtAQpDPWG/6g0oRYWFtL0NiyJX5ENFhyLqH4xjrYE31vx0OvfTYui2GbHUpD1WGFDgnybqymDTMyZJ6Atuxt" as C9
 
+#### Non protein coding structures
+# The 5'- ACGAAC - 3' sequence is the core of the TRS used by Sars-Cov and Sars-Cov-2 / nCov19
+tag "ACGAAC" as trs-core
+
+# 5' UTR structural elements
+tag "ATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAA" as leader-sequence
+tag "TTTAAAATCTGTGTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAGTAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTCGTCCGGGTGTGACCGAAAGGTAAG" as end-utr5
+
+# 3' UTR
+tag "CAATCTTTAATCAGTGTGTAACATTAGGGAGGACTTGAAAGAGCCACCACATTTTCACCGAGGCCACGCGGAGTACGATCGAGTGTACAGTGAACAATGCTAGGGAGAGCTGCCTATATGGAAGAGCCCTAATGTGTAAAATTAATTTTAGTAGTGCTATCCCCATGTGATTTTAATAGCTTCTTAGGAGAATGACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" as utr3
+
 # "interstice" here are non-coding parts of the DNA/RNA strand of the sars-cov2 virus. Some of them are due to not currentluy supported overlapping ORFs, other are truly non coding
-tag "ACGAACA" as interstice1
-tag "ACGAACTT" as interstice2
-tag "GCACAAGCTGATGAGTACGAACTT" as interstice3
-tag "ACGAACTAAATATTATATTAGTTTTTCTGTTTGGAACTTTAATTTTAGCC" as interstice4
+tag "A" as interstice1
+tag "TT" as interstice2
+tag "GCACAAGCTGATGAGT" as interstice3
+tag "TAAATATTATATTAGTTTTTCTGTTTGGAACTTTAATTTTAGCC" as interstice4
 tag "GTGACAACAG" as interstice5
-tag "ACGAAC" as interstice6
-tag "TTGAACTTTCATTAATTGACTTCTATTTGTGCTTTTTAGCCTTTCTGCTATTCCTTGTTTTAATTATGCTTATTATCTTTTGGTTCTCACTTGAACTGCAAGATCATAATGAAACTTGTCACGCCTAAACGAAC" as interstice7
-tag "ACGAACAAACTAAA" as interstice8
+tag "TTGAACTTTCATTAATTGACTTCTATTTGTGCTTTTTAGCCTTTCTGCTATTCCTTGTTTTAATTATGCTTATTATCTTTTGGTTCTCACTTGAACTGCAAGATCATAATGAAACTTGTCACGCCTAA" as interstice7
+tag "AAACTAAA" as interstice8
 tag "ACTCATGCAGACCACACAAGGCAG" as interstice9
 
+######## Finally the code can be assembled
 
-UTR5
+# 5' UTR: L  - TRS-L - ... 
+# When copying the RNA into sgRNAs, the RTC will skip all the code between the chosen TRS sequence until the one next to the leader sequence:
+# (gRNA) L - TRS-L - .... (proteins) ... - TRS-B - ... => (sgRNA) L - TRS-B - ...
+# TRS: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7179501/
+leader-sequence
+trs-core
+end-utr5
 
 # {rna1<rna2) = -1 slippery event
+# PP1A and PP1AB contains all the NSPs necessary to build the Replication Transcription Complex (RTC)
+# The RTC is needed to copy the gRNA and also genrate sgRNA by skipping some parts, enabling the translation of the other proteins encoded in the RNA strand by the Ribosome
 
 produce C1A@PP1A.up < C1AB@PP1AB.up
-interstice1
+
 ## ORF-2
 # ORF-2a: The Spike Glycoprotein. It's used by the virion to bind to the ACE2 receptors to enter human cells
+trs-core
+interstice1
 produce CSPIKE@SPIKE.up
-interstice2
 
 # to combine with ORF-2b
 
 ## ORF-3
 # ORF-3a
+trs-core
+interstice2
 produce C3A@ORF3A.up
 # Also: ORF-3c, ORF-3d, ORF-3d2
 # + the case of ORF-3b (between ORF-3a and ORF-4 with 4 evolution steps)
-interstice3
 
 # ORF-4
+
+interstice3
+trs-core
+interstice2
 produce CENVELOPPE@ENVELOPPE.up
-interstice4
 
 # ORF-5
+# Note: the RNA of the Membrane protein contain the TRS sequence used to produce the sgRNA dedicated to the productionf of the ORF6 protein
+trs-core
+interstice4
 produce CMEMBRANE@MEMBRANE.up
 interstice5
 
 # ORF-6
 produce C6@ORF6.up
-interstice6
 
 ## ORF-7
 # TO-DO: ORF7a and ORF7b
 # For now ORF7a only
-
+trs-core
 produce C7A@ORF7A.up
 interstice7
 
+
 # ORF-8
+trs-core
 produce C8@ORF8.up
-interstice8
 
 ## ORF-9
 # ORF-9a: Nucleocapsid phosphoprotein
 # Basically the virion shell
+trs-core
+interstice8
 produce C9@NUCLEOCAPSIDE.up
 # ORF-9b and ORF-9c need to be integrated
 interstice9
@@ -152,5 +178,6 @@ interstice9
 # ORF-10
 # ORF-10 is not proven to be functionnaly interpreted as a protein
 produce gU4Uc9NklWnRUei/o6i@ORF10.up
-UTR3
+
+utr3
 
