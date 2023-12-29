@@ -10,71 +10,14 @@ import re
 
 from utils import *
 from utils_genomics import specify, translate
+from langs.patterns import *
+from langs.preprocessing import ParserPreprocessing
 
-## Constants
-
-# REGEXES to detect the main instructions of Assemblome 
-# Import : 'import flsy as polypeptide'
-# Tag: 'tag "FLSY.aa" as polypeptide'
-# Functional expression: 'oKI@FLSY.aa'
-
-REGEX_IMPORT =  r'^import (?P<data>[^"]+) as (?P<tag>\w+)$'
-REGEX_TAG = r'^tag "(?P<data>[^"]+)" as (?P<tag>[\w-]+)$'
-REGEX_FUNCTIONAL_EXPRESSION = r'([A-Za-z0-9+\/=]+@)?([ARNDCQEGHILKMFPSTWYV]+)\.aa'
-REGEX_SLIPPERY = r'([AUGC]+)\.rna\s+(<+|>+)\s+([AUGC]+)\.rna'
-REGEX_PRODUCE = r'^produce ([AUGC]+)\.rna'
-#REGEX_RNA = r'([AUGC]+)\.rna'
-
-# PDB and Uniprot
-# Either 'PCHS.pdb'
-# Or 'from PDB import PCHS as random_protein' (equivalent to a tag PCHS.pdb as random_protein)
-REGEX_PDB_CHAIN = r'(?P<id_pdb>[A-Z0-9]{4})(?P<chain>:\d)?\.pdb'
-REGEX_UNIPROT_CHAIN = r'(?P<id_uniprot>[A-Z0-9]{6,11})\.up'
-
-#
 DB_UNIPROT = Uniprot()
 
 ## Functions
 
 # Assembly
-
-def find_replacement_pattern(text: str, regex):
-    """Detect patterns which are used to replace a given token by some other data."""
-    data, tag = None, None
-
-    # Match the pattern in the text
-    match = re.fullmatch(regex, text)
-
-    if match:
-        data = match.group('data')
-        tag = match.group('tag')
-
-    return data, tag
-
-def inverse_progressive_replacement(content: list[str], regex, func: callable) -> list[str]:
-    """This function replaces a sequence by another beginning by the end of the text as represented by a list of lines.
-    It is used to implement aliases, as an alias should not replace sequences that are defined before it"""
-    content_new = []
-
-    for i, line in sorted(enumerate(content), key=lambda x: x[0], reverse=True):
-        data, tag = find_replacement_pattern(line, regex)
-        if data is not None and tag is not None:
-            replacement = func(data)
-            #content_new = [line.replace(tag, replacement) for line in content_new]
-            content_new = [re.sub(r"\b%s\b" % tag, replacement, line) for line in content_new] 
-        else:
-            content_new.append(line)
-
-    content_new.reverse()
-    return content_new
-
-def parse_imports(content: list[str], path_current: str) -> list[str]:
-    """replace all tags by their corresponding data following the tag instructions"""
-    return inverse_progressive_replacement(content, REGEX_IMPORT, lambda path: load_raw(path_current + path))
-
-def parse_tags(content: list[str]) -> list[str]:
-    """replace all tags by their corresponding data following the tag instructions"""
-    return inverse_progressive_replacement(content, REGEX_TAG, lambda x: x)
 
 def replace_pdb_by_aa_chain(match):
     pdb_id = match.group(1)

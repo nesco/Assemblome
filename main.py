@@ -4,7 +4,7 @@ import sys
 
 
 # from langs import parse_tags, parse_imports, parse_functional_expressions, parse_produce
-from langs import *
+from old_langs import *
 
 def scan(path):
     """read a asb file and perform a lexical analysis."""
@@ -27,7 +27,10 @@ def scan(path):
 
 def parse(content, path):
     # TO-DO: get over this abomination
-    return parse_produce(parse_slippery_sequence(parse_functional_expressions(parse_ids(parse_tags(parse_imports(content, path))))))
+    preprocesser = ParserPreprocessing(path)
+    content = preprocesser.parse(content)
+    #return parse_produce(parse_slippery_sequence(parse_functional_expressions(parse_ids(parse_tags(parse_imports(content, path))))))
+    return parse_produce(parse_slippery_sequence(parse_functional_expressions(parse_ids(content))))
 
 def assemble(content, path):
     content_parsed = parse(content, path)

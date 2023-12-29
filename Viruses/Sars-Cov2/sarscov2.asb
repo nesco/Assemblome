@@ -1,63 +1,183 @@
-# The preamble is a large non-coding sequence at the start
-import preamble.fna as preamble
+## This ASB document is describing the Sars-Cov-2 Virus
 
-# The ORFs proteins
-import orf1ab.fna as orf1ab
-import orf3a.fna as orf3a
-import orf6.fna as orf6
-import orf7a.fna as orf7a
-import orf8.fna as orf8
-tag "ATGGGCTATATAAACGTTTTCGCTTTTCCGTTTACGATATATAGTCTACTCTTGTGCAGAATGAATTCTCGTAACTACATAGCACAAGTAGATGTAGTTAACTTTAATCTCACATAG" as orf10
+# TO-DO: Find way to better describe and encode UTRs
+# TO-DO: Find a way to describe overlapping gene/ORF. ORF9b and ORF9 are entirely contained in the same sequence as the N protein. It put some restriction on the codon used
+# TO-DO: Describe how ORFs can encode proteins. ORF1ab encodes 16 non-structural proteins (NSPs) numbered from 1 to 16.
+# TO-DO: Organize protein production around ORFs
+# https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8067447/#:~:text=Genomic%20Arrangement%20of%20SARS%2DCoV%2D2&text=The%20pp1a%20non%2Dstructural%20protein,and%20nucleocapsid%20(N)%20proteins.
 
-# The glycoproteins S, E, M
-import s.fna as spike
-import e.fna as enveloppe
-import m.fna as membrane
+#  TO-DO:
+#  Support ORFs in general. If there is an ORF, the complement should be at frame level + indicate where are the proteins
+#  Indicates the polyproteins and maybe there future NSPs subcomposant for PP1a and PP1ab for ORF1a and ORF1ab
+#  There are other alternative frames: ORF9 has ORF9a (Nucleocapsid), ORF9b, ORF9c for example
+#  Separate the cap from UTR-5'
+#  Separate the Poly-A structure from UTR-3'
+#  Find a shorter way to encode complements
 
-# The phosphoro-protein N
-import n.fna as nucleocapsid
+##### Sars-Cov-2 #######
+# The Sars-Cov2 is a positive single strand virus. As a virus, its information is really compressed
+# It injects a RNA strand that is interpreted by the ribosome as a mRNA
+# Struture of the strand
 
+#
+#
+# Most of the information is in ORF1a/b, it encodes probabistically two different polyproteins through a -1 frameshift event
+# PP1a which encodes 11 non-structural proteins (NSPs)
+# PP1ab which encodes 15 NSPs
+# The NSPs are created when the PP1a/b are cleaved of post-translation
+# The -1 frameshift event enables to create the NSPs in different proportions
+# https://en.wikipedia.org/wiki/ORF1ab
+#
+# The most important of them is NSP 12, which encodes the RdRP, a protein that enables RNA -> RNA information tranfer
+# All this NSPs assembles into a RTC (Replication - Transcription Complex)
+# It copies the genomic RNA (gRNA) and can "skip" some part to create subgenomic RNA (sgRNA)
+# This mechanism is what enables thez virus to store all its protein on a single strand of RNA
+# Fore example, by creating a sgRNA which skips ORF1ab, the ribosome will read it as producing the spike protein, because the first start codon it will encounter correspond to the spike, and it will stop with the stop codon of the spike
+# Same for all other proteins
+#
+# another shenanigan the virus uses besides the -1 frameshift is leaky scanning
+# it enables it to encode several proteins in a unique sequence, or proteins in ORFs that overlaps 
+#
+# All this space optimisation comes of course with a loss of "orthogonality". As a given sequence needs to produce several working proteins with specific functions, it creates strong constraints on this sequence
+# 
+# The end product of this RNA is to create new virions, which means copies of the entire original gRNA, bound by the N (nucleocapsid) proteins, stuffed into the E (enveloppe) protein. And the M (membrane) and  S (spike) proteins which rest on the enveloppe. Spike function is to trigger the ACE-2 receptors of a cell to enable the virion to enter it and continue the cycle. The function of M is less clear, but its important in the assembly of the virus 
 
-# "interstice" here are non-coding parts of the DNA/RNA strand of the sars-cov2 virus
-tag "ACGAACA" as interstice1
-tag "ACGAACTT" as interstice2
-tag "GCACAAGCTGATGAGTACGAACTT" as interstice3
-tag "ACGAACTAAATATTATATTAGTTTTTCTGTTTGGAACTTTAATTTTAGCC" as interstice4
-tag "GTGACAACAG" as interstice5
-tag "ACGAAC" as interstice6
-tag "TTGAACTTTCATTAATTGACTTCTATTTGTGCTTTTTAGCCTTTCTGCTATTCCTTGTTTTAATTATGCTTATTATCTTTTGGTTCTCACTTGAACTGCAAGATCATAATGAAACTTGTCACGCCTAAACGAAC" as interstice7
-tag "ACGAACAAACTAAA" as interstice8
-tag "ACTCATGCAGACCACACAAGGCAG" as interstice9
+# and the ""interstices"" -> find what it is. NOTE: THE "INTERSTICES" ARE MOSTLY DUE TO ORFs b/c/d etc
 
-# end + Poly-A
-import end.fna as end
+####### Proteins
+# ORF1ab Polyprotein
+!tag "P0DTC1" as PP1A
+!tag "P0DTD1" as PP1AB
 
-preamble
-orf1ab 
+# SARS-COV-2 GLYCOPROTEINS
+!tag "P0DTC2" as SPIKE
+!tag "P0DTC4" as ENVELOPPE
+!tag "P0DTC5" as MEMBRANE
+
+# Proteins of unamed ORFs
+!tag "P0DTC3" as ORF3A
+!tag "P0DTC6" as ORF6
+!tag "P0DTC7" as ORF7A
+!tag "P0DTC8" as ORF8
+#
+# N-Phosphoro protein
+# Warning: we only consider at present the ORF9a / N protein, which comprise the entire ORF9 reading frame
+# However in the future, there should be indications for ORF9b and ORF9c proteins as alternative readings of ORF9
+!tag "P0DTC9" as NUCLEOCAPSIDE
+
+!tag "A0A663DJA2" as ORF10
+
+# complements
+!tag "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" as C1AB
+
+!tag "TIaSxykmiOLBLZ2BXL3BJqmvw3t37cVnRORrT+/k6UOZ4TlDl9FjuY1JbY2RT5KaTxHigWpS29gHibSE3s1A1dmLKcOuFxFUKqhfs4jfR9kuapkFJIyUnsPwbQW/KE8vIWSV8BgiFXdnrlTxnMEmsnBfTpRFul+StdBI4Kf1bTryBcVuIpOf4BNTMm9JESEKh2xzs25WpgXroWa059iIOSPZC1nkNG/tXdj+zW3VV1Tj6oQXzxERsI/ytKYGmEVgXrIq/ikaoITlGAFlYcmfkET/5U5UHivwDXdt+O33FOkVJ6moi/8KNRFr1ii9H2S74G8kd0fqW8vBoWynNcT2KarUKyafJrazynib/JnNggJY1yzCFVJe+Uv626XSnWyFlyGb8Xjr/ki7lvPUPNzMw+bz4jX5uNq2iFQt1ZlA+dmSO0mh3tyXOq96KlC5QRz8z/VjbIvzSExMaPl96XpOp9iqOlZz9rcJmw/ruaScZDhB41cSY33yQG6X9cLrHs+UzEGE8Pl3lhomE/4qTvP6rPc+GKocz1SKR388bAilkiS+UA5byfSI3p8S2iF+raOzilYtWTLcGeC8hjV2ppM4llJ8CrNjQzn2vPfD6/vEBYwGIiFQU9QS+pf1yhcv1ygY/2BNalcdZq05ldB5RB9Ipu4aVdqbq4qLQfNJI90uZSsrXeKbz4LJjORcIX/SzVsNYNqOwxBaQRpL2ZALa/etl4QQBG/5GyYmrg9In1kN3avNWNRZQrf4262tVl4K3DglMdksY7gU4mBGMrhDADT+QiZF4cmGRfhcgBRdCSJGFeUYd4feUSwi7Va7Jiv608hBJQ3u+s/V1PsZ3A7JY/G/420KBeWjWYdBXZ6v90fCTwjNfsUc5tthbJLX8pxw6xjN+YlyxxIF5oUbnP0AN6ycY9YMAGbgimseLjLbn6Nx+nsXLI14ffL6BuP4V0vhPzJmS4AfOF/UmmrVpvI6FzE/51VkAx3Y5jn2EOIPwN+AP8R1VDQGfCjN4gKbHFkrj4eMOO6jHjqceFEoVaIIGtmqQRHTtcEYi0VLxE8EEhhexu2afeD34Xx8zDAAQ+NypVZVe3uvyeV3CKr6mVVeC+QlmBm9ROCjyfNFziqFLNDj+++pvtqVmn0vcbAlQ6Jl4RChGTQlNF6fc78PF6Dsjx4fCwcKHke50jn3zEKbGVvMdfr2laqJy2tXpqo9aEhuaOU8JI4pXowivzqYftrQQi+hWA5yolw44r/wpevOJ8My9oxquh8OpnsbZ30z3Wtm2M0ELbuAqUMOISHRImDQiompp4A3vUQIXV18OA+N/xkr8AZzlpfzb2NENnYt/I45yfJU/c3BKH5poYTMGfRj0KhDzY7+xfFUHLkwmogNhtYJmRtzrht/yw2PG4jboV0WWoVMRyKFBWVqjcz74Xy5JlhLaps1jImeW6MtoqnMEt+AQPW9beeqIDgNx6oTS0VPpk5xp8VJ0LoTmOndZ3+ue68Y9d10Y2F7UvWkJXHVc/wqAZQlcbk/7n9KVcjwDTsjJmyZRa8X9fs2OIlLjuAf2DonINnb//L1YVxNv/g4SWVdaMhQT2bDjZhY5q7KGDXo3+uxRQO28Z5pKCNwRo+RZgBkJXM2GHTtqshlSMvwZxkIEdN2bv6LorGWoyVznVRrPbmv2ViSRwfd8xUwvYhIjd99K0RAYkm+0+P3zRNrgHaD3i2x9HTX5mE75AWLsnBSkCqUE4DBEIkUYjbCxIIoH6SgMVIvhauktWzF+ZRWx93sO76ATCQ95LORk5QWIx5+X+SV98orgsj3ICmyzorYk7mMP4WO85wnPlxwXOfjdI1CaJ7kh2RfVVo1m3Y/q/fXBhLfzjEHXJ2j1T1UnEALQgg+h8hJoohd4aq7+e/i/+zyOJ4+rm4ILHZ52Me45cNQ35bzSO6CA253jp9XODSEMr0DWCZytVlLO+kZy4KdRvb5VzfOdEwdGVCRf4/HVKR8eIIsTbetw6fcGQbcWJMHrJPZ4vh0Yr8K3B8NUSlfJOK2eOijYwOKLbKYT6CZoJf2WWoqP5IReBvMCeef1U" as C1A
+
+!tag "8W8IohZIzMXLZBwyX8qXbCSWenYutjF9MrFL4GuOk+TVdJ+IvPlHc68HdSREvIreN++hDrES5UGcdERuLp+TVeDkdJMosjI3KT6Kb/K1CIAcTldFpxdVtDAbY2Vt/pfwNrkX0VmdXMfPvnqLiTVu4qTJunvRTnzL8UmZJrI02YtNcAHFv1qCwx680X37tqFj3NZ7O5RhIQ9rcA4OdB1vLMneYd+n3uT/ypgncCmCajQkfax+vO98kn/mAEtgukQsExn25YQFHaswL4ITHVgqeInLsqGE6+WUKHONoJH8o6afd+/eXoA/9G9ELyRTicXYtT2/LqXNyGUF3swuGwBTJzyp6H562ZMCtXSpVjED4/QDaVjx08q2B9XOWp1TzYyCJpcHqtxgZpH2FaGXpB6IgAWBsrWbaO4XZVu4FxzqqmxuBzPOoNw3Jm1h+EwfGHrr5zLGQ5NDZclc6bijrPehm8Ql2PaiKgqTqd/v7Km91/UxMxh6f8k7POyxxX5ftYrz5qaKLed814YbskHEtOz1hNMzK2c1LSTamcjTqJ/pw6UyUwSrMz1shBy99jW6U3OlMVAlwrCRWCxuHrw3AX4E2" as CSPIKE
+
+!tag "aGYDZtDF6g+BYytf4xv6710EFpYaLpRGwKZxix9f1bTyQyDItQ1i994ElYSg6YBrDeHNRzpuopxzVC7AaX/Tp7sdKQM0x/0Ad0UhQvd1xClswk/BiG0IZVyySp1sCavR1s" as C3A
+!tag "ZRpJVK46xx6ojA4QbUt8cyKJlD/mM9H1s61h" as CENVELOPPE
+!tag "oSdGNWodRfmbyaJEbIMBwHO2YcEnrpbGRy46MknJURteLz9HnBm8ZeyXpUqtXvbP/rtkfrwRW+5Rtys8pK3RNDpF09JQh1Q2nmq8BE4EW" as CMEMBRANE
+!tag "6fi9P5F1alTXE7Urkh5OYiRR/t1Xtw" as C6
+!tag "8u3vafCjLkENMWT4dkCA7XbQuifDl2HT6S2XSSBBZXdxCdKADWcgo+p/ju" as C7A
+!tag "8u7CTTNIm+nz8pXVjPKmVyFBjUXLfBkwI7tB3uZqRvoP4X6E4SJbMVBNFo" as C8
+!tag "P3IUQdZuJVNJf9x6DQQO7ynUhI16iK3Rjg5gTAtEjinT3XNJJvzDIZbkv7cXXp5ptI5i2noURT9CFPC40jmQImh4WICii2TXnpv8BpbzYLH2Qm+YVGtAQpDPWG/6g0oRYWFtL0NiyJX5ENFhyLqH4xjrYE31vx0OvfTYui2GbHUpD1WGFDgnybqymDTMyZJ6Atuxt" as C9
+
+#### Non protein coding structures
+# The 5'- ACGAAC - 3' sequence is the core of the TRS used by Sars-Cov and Sars-Cov-2 / nCov19
+!tag "ACGAAC" as trs-core
+
+# 5' UTR structural elements
+# Note: the m7G RNA is omitted in the leader-sequence, it's however crucial to form the the GpppA-RNA cap, as the Sars-Cov2 sequence is RNA and not DNA
+# The structure seems to be Cap-1 (m7GpppNm)
+!tag "ATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAA" as leader-sequence
+!tag "TTTAAAATCTGTGTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAGTAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTCGTCCGGGTGTGACCGAAAGGTAAG" as end-utr5
+
+# 3' UTR
+!tag "CAATCTTTAATCAGTGTGTAACATTAGGGAGGACTTGAAAGAGCCACCACATTTTCACCGAGGCCACGCGGAGTACGATCGAGTGTACAGTGAACAATGCTAGGGAGAGCTGCCTATATGGAAGAGCCCTAATGTGTAAAATTAATTTTAGTAGTGCTATCCCCATGTGATTTTAATAGCTTCTTAGGAGAATGACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" as utr3
+
+# "interstice" here are non-coding parts of the DNA/RNA strand of the sars-cov2 virus. Some of them are due to not currentluy supported overlapping ORFs, other are truly non coding
+!tag "A" as interstice1
+!tag "TT" as interstice2
+!tag "GCACAAGCTGATGAGT" as interstice3
+!tag "TAAATATTATATTAGTTTTTCTGTTTGGAACTTTAATTTTAGCC" as interstice4
+!tag "GTGACAACAG" as interstice5
+!tag "TTGAACTTTCATTAATTGACTTCTATTTGTGCTTTTTAGCCTTTCTGCTATTCCTTGTTTTAATTATGCTTATTATCTTTTGGTTCTCACTTGAACTGCAAGATCATAATGAAACTTGTCACGCCTAA" as interstice7
+!tag "AAACTAAA" as interstice8
+!tag "ACTCATGCAGACCACACAAGGCAG" as interstice9
+
+######## Finally the code can be assembled
+
+# 5' UTR: L  - TRS-L - ... 
+# When copying the RNA into sgRNAs, the RTC will skip all the code between the chosen TRS sequence until the one next to the leader sequence:
+# (gRNA) L - TRS-L - .... (proteins) ... - TRS-B - ... => (sgRNA) L - TRS-B - ...
+# TRS: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7179501/
+leader-sequence
+trs-core
+end-utr5
+
+# rna1 < rna2 = -1 slippery event
+# PP1A and PP1AB contains all the NSPs necessary to build the Replication Transcription Complex (RTC)
+# The RTC is needed to copy the gRNA and also genrate sgRNA by skipping some parts, enabling the translation of the other proteins encoded in the RNA strand by the Ribosome
+
+produce C1A@PP1A.up < C1AB@PP1AB.up
+
+## ORF-2
+# ORF-2a: The Spike Glycoprotein. It's used by the virion to bind to the ACE2 receptors to enter human cells
+trs-core
 interstice1
+produce CSPIKE@SPIKE.up
 
-spike
+# to combine with ORF-2b
 
+## ORF-3
+# ORF-3a
+trs-core
 interstice2
-orf3a
+produce C3A@ORF3A.up
+# Also: ORF-3c, ORF-3d, ORF-3d2
+# + the case of ORF-3b (between ORF-3a and ORF-4 with 4 evolution steps)
+
+# ORF-4
+
 interstice3
+trs-core
+interstice2
+produce CENVELOPPE@ENVELOPPE.up
 
-enveloppe
-
+# ORF-5
+# Note: the RNA of the Membrane protein contain the TRS sequence used to produce the sgRNA dedicated to the productionf of the ORF6 protein
+trs-core
 interstice4
-
-membrane
-
+produce CMEMBRANE@MEMBRANE.up
 interstice5
-orf6
-interstice6
-orf7a
+
+# ORF-6
+produce C6@ORF6.up
+
+## ORF-7
+# TO-DO: ORF7a and ORF7b
+# For now ORF7a only
+trs-core
+produce C7A@ORF7A.up
 interstice7
-orf8
+
+
+# ORF-8
+trs-core
+produce C8@ORF8.up
+
+## ORF-9
+# ORF-9a: Nucleocapsid phosphoprotein
+# Basically the virion shell
+trs-core
 interstice8
-
-nucleocapsid
-
+produce C9@NUCLEOCAPSIDE.up
+# ORF-9b and ORF-9c need to be integrated
 interstice9
-orf10
-end
+
+# ORF-10
+# ORF-10 is not proven to be functionnaly interpreted as a protein
+produce gU4Uc9NklWnRUei/o6i@ORF10.up
+
+utr3
+
