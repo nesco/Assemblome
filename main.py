@@ -17,20 +17,21 @@ def scan(path):
         content = list(map(str.strip, file))
 
     content = [line for line in content if not line.startswith("#") and not line == ""]
-    #path_dir = '/'.join(patih.split('/')[:-1])
-    #if len(path_dir) > 0:
-    #    path_dir = path_dir + '/'
-    #else:
-    #    path_dir = './'
-    #return content, path_dir
     return content
 
 def parse(content, path):
     # TO-DO: get over this abomination
-    preprocesser = ParserPreprocessing(path)
+    preprocesser = ParserPreprocesser(path)
+    converter = ParserConverter()
+    compiler = ParserCompiler()
+
     content = preprocesser.parse(content)
-    #return parse_produce(parse_slippery_sequence(parse_functional_expressions(parse_ids(parse_tags(parse_imports(content, path))))))
-    return parse_produce(parse_slippery_sequence(parse_functional_expressions(parse_ids(content))))
+
+    content = '\n'.join(content)
+    content = converter.parse(content)
+    content = compiler.parse(content)
+    #return parse_produce(parse_slippery_sequence(content))
+    return content.split('\n')
 
 def assemble(content, path):
     content_parsed = parse(content, path)

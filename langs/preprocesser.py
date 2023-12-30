@@ -9,8 +9,8 @@ import re
 from utils import load_raw
 
 #### Regular Expressions
-REGEX_READ =  r'^!read (?P<data>[^"]+) as (?P<tag>\w+)$'
-REGEX_TAG = r'^!tag "(?P<data>[^"]+)" as (?P<tag>[\w-]+)$'
+REGEX_READ =  r'^\s*!read (?P<data>[^"]+) as (?P<tag>\w+)\s*$'
+REGEX_TAG = r'^\s*!tag "(?P<data>[^"]+)" as (?P<tag>[\w-]+)\s*$'
 
 ### Utils ###
 
@@ -45,7 +45,7 @@ def inverse_progressive_replacement(content: list[str], regex, func: callable) -
 
 ### Parser Class ###
 
-class ParserPreprocessing():
+class ParserPreprocesser():
 
     def __init__(self, path):
         self.path = path
@@ -62,11 +62,21 @@ class ParserPreprocessing():
 
 def test_tag_replacement():
     # Happy path for tag
-    content = ['!tag "Alpha" as Alph', '!tag "Omega" as Omg', 'Alph', 'Omg', 'I am the Alph and the Omg']
-    expected = ['Alpha', 'Omega', 'I am the Alpha and the Omega']
-    parser = ParserPreprocessing(None)
-    content = parser.parse(content)
-    assert set(content) == set(expected)
+    content = """
+    !tag "Alpha" as Alph
+    !tag "Omega" as Omg
+    Alph
+    Omg
+    I am the Alph and the Omg"""
+
+    expected = """
+    Alpha
+    Omega
+    I am the Alpha and the Omega"""
+
+    parser = ParserPreprocesser(None)
+    content = '\n'.join(parser.parse(content.split('\n')))
+    assert content == expected
 
 if __name__ == "__main__":
     test_tag_replacement()
