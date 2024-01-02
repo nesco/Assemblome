@@ -8,7 +8,19 @@ from utils import *
 
 REGEX_SLIPPERY = r'([AUGC]+)\.rna\s+(<+|>+)\s+([AUGC]+)\.rna'
 REGEX_PRODUCE = r'produce ([AUGC]+)\.rna'
-#REGEX_RNA = r'([AUGC]+)\.rna'
+REGEX_MULTISEQUENCE = r"([AUGC]+(?:\s*\|\s*[AUGC]+)*)"
+#REGEX_MULTISEQUENCE_ON_SEVERAL_LINES =   r"\(\s*([AUGC\s]+(?:\s*\|\s*[AUGC\s]+)*)\s*\)"
+#r"(\(\s*([AUGC]+\.rna(?:\s*\|\s*[AUGC]+\.rna)*)\s*\))"
+REGEX_RNA = r'\b([AUGC]+)\.rna\b'
+
+### Exceptions
+
+class InvalidMultisequenceException(Exception):
+    """Exception raised when sequences cannot form a single RNA sequence."""
+    def __init__(self, sequence, message="does not fit the criteria for forming a single RNA sequence."):
+            self.sequence = sequence
+            self.message = f"Sequence '{sequence}' {message}"
+            super().__init__(self.message)
 
 ### Functions
 
@@ -47,22 +59,85 @@ def replace_slippery_sequence(match):
     
     return part_first + part_second + ".rna"
 
+def capture_multisequences(content):
+    content_new = content
+
+#    patterns_multiline = re.findall(REGEX_MULTISEQUENCE_ON_SEVERAL_LINES, content_new, re.DOTALL)
+
+#    for full_expr, pattern in patterns_multiline:
+#        sequences = re.split(r'\s*\|\s*', pattern)  # Split the pattern into individual sequences.
+#        sequences = [seq.strip().replace(' ', '').replace('\n', '') for seq in sequences]  # Trim whitespaces.
+#        longest_seq = max(sequences, key=len)
+#        
+#        for seq in sequences:
+#            print('\n')
+#            print(seq)
+#            if seq != longest_seq:
+#                if not seq in longest_seq:
+#                    raise InvalidMultisequenceException(seq)
+#
+#        # Replace the pattern with the longest sequence.
+#        print('kkjjh')
+#        print(pattern)
+#
+#        content_new = content_new.replace(full_expr, longest_seq)
+#
+#    patterns = re.findall(REGEX_MULTISEQUENCE, content_new, re.MULTILINE)
+    
+    patterns = re.findall(REGEX_MULTISEQUENCE, content_new, re.DOTALL)
+
+    for pattern in patterns:
+        sequences = pattern.split('|')  # Split the pattern into individual sequences.
+        sequences = [seq.strip()[:-4] for seq in sequences]  # Trim whitespaces, and removes ".rna".
+        longest_seq = max(sequences, key=len)
+
+        for seq in sequences:
+            if seq != longest_seq:
+                if not seq in longest_seq:
+                    raise InvalidMultisequenceException(seq)
+
+        # Replace the pattern with the longest sequence.
+        content_new = content_new.replace(pattern, longest_seq)
+
+    return content_new
+
+
+def replace_multisequence(match):
+    for group in match.groups():
+        if group:  # This check is to ignore None captures
+            print(group)
+
 def replace_produce(match_obj):
     rna_chain = match_obj.group(1)
-    dna_chain = rna_chain.replace('U', 'T')
-    return dna_chain
+    #dna_chain = rna_chain.replace('U', 'T')
+    #return dna_chain
+    return rna_chain
 
 ### Parser
 
 class ParserCompiler():
 
-    def __init__(self):
+    def __init__(self, target="DNA"):
         self.content = None
+        self.target = target
 
     def parse(self, content):
         self.content = content
         self.content = re.sub(REGEX_SLIPPERY, replace_slippery_sequence, self.content)
-        self.content = re.sub(REGEX_PRODUCE, replace_produce, self.content)
+        self.content = re.sub(r'\bproduce\b', '', self.content)
+        self.content = re.sub(REGEX_RNA, replace_produce, self.content)
+        self.content = re.sub(r'([AUGC]+)([\s\n]+)([AUGC]+)', r'\1\3', self.content)
+        self.content = self.content.replace(' ', '')
+        #self.content = capture_multisequences(self.content)
+
+        if self.target == "DNA":
+            # Remove the cap, the poly-A and replace the 'U' by the 'T'
+            self.content = self.content.replace('U', 'T') 
+            pass
+        elif self.target == "RNA":
+            # Nothing to do for now
+            pass
+
         return self.content
 
 ### Tests
@@ -83,3 +158,11 @@ def test_slippery_pattern():
         print("Stream:", stream_type, "repeated", stream_count, "times")
         print("Second RNA:", second_rna)
 
+def test_multisequence():
+    text = """ prefix  AAAAAAUUUU.rna | AAAAA.rna | UUUU.rna | AAUU.rna suffix
+    prefix GGCC.rna | GGCCGGCC.rna | GCCG.rna suffix """
+    expected = ' prefix  AAAAAAUUUU.rna suffix\n    prefix GGCCGGCC.rna suffix ' 
+    assert capture_multisequences(text) == expected
+
+if __name__ == "__main__":
+    test_multisequence()

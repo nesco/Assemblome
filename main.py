@@ -7,9 +7,8 @@ import sys
 from old_langs import *
 
 def scan(path):
-    """read a asb file and perform a lexical analysis."""
+    """read a asb file."""
     
-    instructions = ['#', 'import', 'tag', 'produce', 'raw']
     content = []
     
     #Read file
@@ -20,7 +19,6 @@ def scan(path):
     return content
 
 def parse(content, path):
-    # TO-DO: get over this abomination
     preprocesser = ParserPreprocesser(path)
     converter = ParserConverter()
     compiler = ParserCompiler()
@@ -30,7 +28,7 @@ def parse(content, path):
     content = '\n'.join(content)
     content = converter.parse(content)
     content = compiler.parse(content)
-    #return parse_produce(parse_slippery_sequence(content))
+
     return content.split('\n')
 
 def assemble(content, path):
